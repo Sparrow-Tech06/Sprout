@@ -1,0 +1,44 @@
+/* Custom CSS Variables (Root) */
+:root {
+    --primary-color: #007bff; /* Bootstrap primary color */
+    --text-color: #333;
+    --max-content-width: 660px;
+    --bg-light: #f8f9fa;
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-color);
+    font-family: 'Arial', sans-serif;
+}
+
+/* Max-width constraint for the story content wrapper */
+#story-container {
+    max-width: var(--max-content-width);
+    padding: 0 15px; /* Add some padding on smaller screens */
+    background-color: #fff;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+/* Style for the content blocks (paragraphs) */
+.story-content-body p {
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+}
+
+/* Style for the main image */
+#story-main-image {
+    max-height: 300px;
+    object-fit: cover;
+    width: 100%;
+}
+
+/* Active language button style */
+.btn-group button.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
