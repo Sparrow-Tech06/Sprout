@@ -5,6 +5,7 @@
     "bn": "বিনিয়োগের মূলনীতি"
   },
   "content": {
+    // Content array remains the same
     "en": [
       "Investment is simply the act of allocating resources, usually money, with the expectation of generating an income or profit.",
       "The key to successful investing is understanding risk and return. Higher potential returns usually come with higher risk.",
@@ -21,6 +22,7 @@
       "ঝুঁকি কমাতে বৈচিত্র্যকরণ, বা আপনার বিনিয়োগগুলিকে বিভিন্ন সম্পদের মধ্যে ছড়িয়ে দেওয়া একটি গুরুত্বপূর্ণ কৌশল।"
     ]
   },
-  "image": "../../../assets/images/story1-img.jpg",
+  // **इमेज पाथ अपडेटेड**
+  "image": "../../../assets/images/story1-img.jpg", 
   "category": "Investment, Basics"
 }
