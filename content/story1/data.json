@@ -1,0 +1,26 @@
+{
+  "title": {
+    "en": "The Basics of Investment",
+    "hi": "निवेश के मूल सिद्धांत",
+    "bn": "বিনিয়োগের মূলনীতি"
+  },
+  "content": {
+    "en": [
+      "Investment is simply the act of allocating resources, usually money, with the expectation of generating an income or profit.",
+      "The key to successful investing is understanding risk and return. Higher potential returns usually come with higher risk.",
+      "Diversification, or spreading your investments across different assets, is a crucial strategy to minimize risk."
+    ],
+    "hi": [
+      "निवेश सिर्फ संसाधनों, आमतौर पर पैसे, को आय या लाभ उत्पन्न करने की उम्मीद से आवंटित करने का कार्य है।",
+      "सफल निवेश की कुंजी जोखिम और रिटर्न को समझना है। उच्च संभावित रिटर्न अक्सर उच्च जोखिम के साथ आते हैं।",
+      "विविधीकरण (Diversification), या अपने निवेशों को विभिन्न संपत्तियों में फैलाना, जोखिम को कम करने के लिए एक महत्वपूर्ण रणनीति है।"
+    ],
+    "bn": [
+      "বিনিয়োগ হলো সম্পদ, সাধারণত অর্থ, বরাদ্দ করার একটি কাজ, যা থেকে আয় বা লাভের প্রত্যাশা করা হয়।",
+      "সফল বিনিয়োগের মূল চাবিকাঠি হলো ঝুঁকি এবং রিটার্ন বোঝা। উচ্চ সম্ভাব্য রিটার্ন সাধারণত উচ্চ ঝুঁকির সাথে আসে।",
+      "ঝুঁকি কমাতে বৈচিত্র্যকরণ, বা আপনার বিনিয়োগগুলিকে বিভিন্ন সম্পদের মধ্যে ছড়িয়ে দেওয়া একটি গুরুত্বপূর্ণ কৌশল।"
+    ]
+  },
+  "image": "../../../assets/images/story1-img.jpg",
+  "category": "Investment, Basics"
+}
