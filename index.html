@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google" content="notranslate">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no,viewport-fit=cover">  
+  
+  <title> NutriTales - Home </title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #eafaf1;
+      --card: #ffffff;
+      --accent: #2ecc71;
+      --soft-shadow: 0 10px 18px rgba(11,40,60,0.06);
+      --deep-shadow: 0 18px 28px rgba(11,40,60,0.08);
+      --radius: 20px;
+      font-family: 'Nunito', sans-serif;
+    }
+/*********************************************************/
+  * {
+    margin: 0 ;
+    padding: 0 ;
+    box-sizing: border-box ;
+    user-select: none ;
+  }
+    body{
+      margin:0;
+      background: linear-gradient(180deg, var(--bg) 0%, #f6fdf9 100%);
+      min-height:100vh;
+      background-repeat: no-repeat;
+      font-family: 'Nunito', sans-serif;
+    }
+
+    header.header{
+      background: var(--accent);
+      padding: 0 20px;
+      position: relative;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      height: 160px;
+    }
+
+    .notification-icon {
+      background: rgba(255, 255, 255, 0.3);
+      padding: 6px 10px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .promo{
+      position:absolute;
+      left:20px;right:20px;
+      transform:translateY(30px);
+      background:var(--card);
+      border-radius:16px;
+      padding:16px;
+      box-shadow:var(--deep-shadow);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      max-width: 660px;
+      margin: 0 auto;
+      min-height: 120px ;
+    }
+    .promo h3{margin:0;font-size:16px;color:#222;font-weight:700}
+    .promo p{margin:6px 0 0 0;color:#768992;font-size:13px}
+    .promo .cta{
+        display:inline-block;
+        margin-top:10px;padding:8px 12px;
+        border-radius:12px;
+        background:#ecfdf3;
+        border:1px solid #c7f9db;
+        font-weight:600;
+        color:var(--accent);
+        font-size:13px; 
+     }
+
+    main{max-width:660px;margin:60px auto;padding:10px 10px 30px;}
+    .section-title{font-weight:700;color:#234;font-size:18px}
+
+    .grid{margin-top:18px;display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+    .tile{background:var(--card);border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:var(--soft-shadow);min-height:130px;justify-content:center;text-align:center}
+    .tile img{width:70px;height:70px;object-fit:contain;background:#e9fdf1;border-radius:50%;padding:10px}
+    .tile-label{
+       font-weight:600;
+       color:var(--accent);
+       font-size:14px;
+       border-radius:12px;
+       background:#ecfdf3;
+       border:1px solid #c7f9db;
+       display:inline-block;
+       padding:8px 12px;
+       min-width: 60%;
+       text-decoration: none;
+       transition-duration: 0.2s;
+    }
+    .tile-label:hover { 
+       transform: scale(0.95);
+    }
+
+    .toggle-btn {
+      font-size: 1.5rem;
+    }
+/********************************************/
+    .offcanvas {
+       max-width: 80% ;
+    }
+    .offcanvas-footer {
+      border-top: 1px solid #c7f9db;
+      padding: 10px 15px;
+      font-size: 13px;
+      color: #aaa;
+    }
+    ul li a {
+       text-decoration: none;
+       text-align: center ;
+       border-radius:12px;
+       color:var(--accent);
+       font-size: 16px;
+       background:#ecfdf3;
+       border:1px solid #c7f9db;
+       margin: 10px auto;
+       display:block;
+       padding:8px 12px;
+       max-width: 85%;
+       transition-duration: 0.3s;
+       cursor: pointer ;
+    }
+    ul li a:hover { 
+       transform: scale(0.95);
+    }
+
+  </style>
+</head>
+<body oncontextmenu= "return false">
+
+  <header class="header">
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="container d-flex justify-content-between align-items-center">
+        <!-- Left Side -->
+        <div class="d-flex align-items-center">
+          <button class="btn text-white p-0 me-2 toggle-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNav">
+            <i class="bi bi-list"></i>
+          </button>
+          <h1 class="navbar-brand text-white m-0 fs-4">NutriTales</h1>
+        </div>
+
+        <!-- Right Side: Notification -->
+        <div>
+          <a onclick="window.location.href='notifications/notifications.html';" class="notification-icon">
+            <i class="bi bi-bell-fill"></i>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Promo Section -->
+    <div class="promo">
+      <div>
+        <h3> Especially For You </h3>
+        <p> New sections and many topics added. </p>
+        <div class="cta"> Explore Now </div>
+      </div>
+      <img src="assets/splash.png" alt="illus" style="border-radius:12px; height:90px;" draggable="false">
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2 class="section-title">Topics</h2>
+
+      <div class="grid">
+        <article class="tile">
+          <img src="assets/apple.png" alt="Fruits" draggable="false">
+          <a onclick="window.location.href='categories/fruits_catalog.html';" class="tile-label"> Fruits </a>
+        </article>
+
+        <article class="tile">
+          <img src="assets/broccoli.png" alt="Vegetables" draggable="false">
+          <a onclick="window.location.href='categories/vegetables_catalog.html';" class="tile-label"> Vegetables </a>
+        </article>
+
+        <article class="tile">
+          <img src="assets/almond.png" alt="Dry Fruits" draggable="false">
+          <a onclick="window.location.href='categories/dryfruits_catalog.html';" class="tile-label"> Dry Fruits </a>
+        </article>
+
+        <article class="tile">
+          <img src="assets/basil.png" alt="Herbs" draggable="false">
+          <a onclick="window.location.href='categories/herbs_catalog.html';" class="tile-label"> Herbs </a>
+        </article>
+
+        <article class="tile">
+          <img src="https://img.icons8.com/color/96/quiz.png" alt="Quiz" draggable="false">
+          <a onclick="window.location.href='quiz-zone/quiz.html';" class="tile-label"> Quiz </a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- Offcanvas Menu -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNav">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title"> </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column">
+      <ul class="list-unstyled">
+        <li><a onclick="window.location.href='docs/about-us.html';" class="d-block py-2"> About Us </a></li>
+        <li><a onclick="window.location.href='docs/contact-us.html';" class="d-block py-2"> Contact Us </a></li>
+        <li><a onclick="window.location.href='docs/privacy-policy.html';" class="d-block py-2"> Privacy Policy </a></li>
+        <li><a onclick="window.location.href='docs/dev-details.html';" class="d-block py-2"> Developer Details </a></li>
+        <li><a onclick="window.location.href='docs/term-cons.html';" class="d-block py-2"> Terms & Conditions (T&C) </a></li>
+        <li><a onclick="window.location.href='docs/disclaimer.html';" class="d-block py-2"> Disclaimer </a></li>
+        <li><a onclick="window.location.href='#';" class="d-block py-2"> Rate Us </a></li>
+      </ul>
+       <div class="offcanvas-footer mt-auto">
+           © 2025 NOVU-Apps
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- SweetAlert2 cdn -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <!-- Website version checker & cache clear -->
+  <script src="https://sparrow-tech06.github.io/NutriTales/addon/version-check.js"> </script>
+  <!-- App version fetch & show update Popup -->
+  <script src="https://sparrow-tech06.github.io/NutriTales/addon/app-version-checker.js"> </script>
+    
+</body>
+</html>
