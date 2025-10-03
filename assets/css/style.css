@@ -4,6 +4,7 @@
     --text-color: #333;
     --max-content-width: 660px;
     --bg-light: #f8f9fa;
+    --skeleton-color: #e2e6ea; /* Light gray for the loader */
 }
 
 body {
@@ -29,16 +30,48 @@ body {
     font-size: 1.05rem;
 }
 
-/* Style for the main image */
-#story-main-image {
-    max-height: 300px;
-    object-fit: cover;
+/* --- Image Fixed Dimensions and Skeleton --- */
+
+/* Fixed dimensions for the image wrapper */
+.story-image-fixed {
     width: 100%;
+    /* Set a fixed aspect ratio or height */
+    height: 350px; /* Example fixed height */
+    overflow: hidden;
+    background-color: var(--skeleton-color);
+    border-radius: 8px;
 }
 
-/* Active language button style */
-.btn-group button.active {
-    background-color: var(--primary-color);
-    color: white;
+/* Make the actual image fill the fixed container */
+#story-main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures image covers the area without distortion */
+}
+
+/* Skeleton Loader Animation */
+.skeleton-box {
+    position: relative;
+    overflow: hidden;
+}
+
+.skeleton-box::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    animation: loading-animation 1.5s infinite;
+}
+
+@keyframes loading-animation {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
 }
 
