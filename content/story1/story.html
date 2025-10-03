@@ -17,17 +17,23 @@
                 <a href="../../index.html" class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-left"></i> Back to Home
                 </a>
-                <div class="btn-group" role="group" aria-label="Language Switcher">
-                    <button type="button" class="btn btn-primary" data-lang="eng">ENG</button>
-                    <button type="button" class="btn btn-outline-primary" data-lang="hin">HIN</button>
-                    <button type="button" class="btn btn-outline-primary" data-lang="ben">BEN</button>
+                
+                <div class="input-group" style="max-width: 150px;">
+                    <span class="input-group-text"><i class="bi bi-translate"></i></span>
+                    <select id="language-switcher" class="form-select">
+                        <option value="eng">English</option>
+                        <option value="hin">हिन्दी (Hindi)</option>
+                        <option value="ben">বাংলা (Bengali)</option>
+                    </select>
                 </div>
             </header>
 
             <h1 id="story-title" class="mb-3"></h1>
             <p class="text-muted small mb-4">Category: <span id="story-category"></span> | Reading Time: <span id="story-read-time"></span></p>
 
-            <img id="story-main-image" src="" class="img-fluid rounded mb-4" alt="Story Illustration">
+            <div id="image-wrapper" class="story-image-fixed mb-4 skeleton-box">
+                <img id="story-main-image" src="" class="img-fluid rounded" alt="Story Illustration" loading="lazy" style="display: none;">
+            </div>
 
             <div id="story-content" class="story-content-body">
                 </div>
