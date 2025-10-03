@@ -1,11 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Determine the current story path dynamically (e.g., 'story1')
-    // Assumes story.html is always inside a story folder (e.g., /content/story1/story.html)
     const currentPath = window.location.pathname;
     const pathSegments = currentPath.split('/');
     const storyFolder = pathSegments[pathSegments.length - 2]; // Gets 'story1'
 
-    let currentLang = 'eng'; // Default language
+    const langSwitcher = document.getElementById('language-switcher');
+    let currentLang = langSwitcher ? langSwitcher.value : 'eng'; // Default from select or 'eng'
+
+    const storyImage = document.getElementById('story-main-image');
+    const imageWrapper = document.getElementById('image-wrapper');
 
     /**
      * Fetches story data from data.json
@@ -13,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     async function fetchStoryData() {
         try {
-            // Path relative to main.js: '../../content/story1/data.json'
             const response = await fetch(`../${storyFolder}/data.json`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -21,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return await response.json();
         } catch (e) {
             console.error('Error fetching story data:', e);
-            // Fallback for displaying error to user
             document.getElementById('story-content').innerHTML = '<p class="text-danger">Failed to load story content.</p>';
             return null;
         }
@@ -38,8 +39,23 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('story-category').textContent = data.category;
         document.getElementById('story-read-time').textContent = data.read_time;
         document.getElementById('story-author').textContent = data.author;
-        document.getElementById('story-main-image').src = data.image_url;
         
+        // --- Image Loading Handling ---
+        // 1. Set the image source (which triggers the load)
+        storyImage.src = data.image_url;
+        // 2. Add listener to remove skeleton when image is loaded
+        storyImage.onload = () => {
+            imageWrapper.classList.remove('skeleton-box'); // Remove skeleton animation
+            storyImage.style.display = 'block';           // Show the image
+        };
+        // 3. Handle image loading error (optional)
+        storyImage.onerror = () => {
+            console.error('Failed to load story image.');
+            imageWrapper.classList.remove('skeleton-box'); 
+            // Optionally, show a broken image icon or a fallback background
+        };
+
+
         // Get the content for the current language
         const langContent = data[currentLang];
         
@@ -56,16 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
             p.textContent = paragraphText;
             contentDiv.appendChild(p);
         });
-
-        // Update active button state
-        document.querySelectorAll('.btn-group button').forEach(button => {
-            button.classList.remove('btn-primary', 'active');
-            button.classList.add('btn-outline-primary');
-            if (button.getAttribute('data-lang') === currentLang) {
-                button.classList.remove('btn-outline-primary');
-                button.classList.add('btn-primary', 'active');
-            }
-        });
     }
 
     // Initialize the story page
@@ -73,16 +79,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data) {
             renderStory(data);
 
-            // Add event listeners for language switcher buttons
-            document.querySelectorAll('.btn-group button').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const newLang = event.target.getAttribute('data-lang');
-                    if (newLang && newLang !== currentLang) {
-                        currentLang = newLang;
-                        renderStory(data); // Re-render with new language
-                    }
+            // Add event listener for the SELECT language switcher
+            if (langSwitcher) {
+                langSwitcher.addEventListener('change', (event) => {
+                    currentLang = event.target.value;
+                    renderStory(data); // Re-render with new language
                 });
-            });
+            }
         }
     });
 });
