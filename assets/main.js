@@ -74,7 +74,7 @@ function toggleSaveStory(storyId) {
  */
 async function fetchStoryData(storyId) {
     try {
-        const response = await fetch(`../content/${storyId}/data.json`);
+        const response = await fetch(`/content/${storyId}/data.json`); 
         if (!response.ok) {
             throw new Error(`Failed to fetch ${storyId} data`);
         }
