@@ -3,7 +3,7 @@
     {
       "title": "Top Stories",
       "description": "Learn from inspiring short stories",
-      "link": "stories/top-stories.html",
+      "link": "top-stories.html",
       "items": [
         { "title": "The Frugal Seed", "img": "https://picsum.photos/200/300?random=1", "link": "content/story1/story.html", "readTime": "3 min read" },
         { "title": "Coin Collector", "img": "https://picsum.photos/200/300?random=2", "link": "story2.html", "readTime": "2 min read" },
@@ -18,7 +18,7 @@
     {
       "title": "Money Lessons",
       "description": "Build your financial mindset",
-      "link": "stories/money-lessons.html",
+      "link": "money-lessons.html",
       "items": [
         { "title": "Daily Saver", "img": "https://picsum.photos/200/300?random=4", "link": "story4.html", "readTime": "3 min read" },
         { "title": "Coin Collector", "img": "https://picsum.photos/200/300?random=2", "link": "story2.html", "readTime": "2 min read" },
