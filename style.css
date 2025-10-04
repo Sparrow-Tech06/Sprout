@@ -23,7 +23,7 @@ body {
       object-fit: cover;
     }
 
- .card-body h3 {  font-weight: 700; margin: 0; font-size: 14px; }
+ .card-body .title {  font-weight: 700; margin: 0; font-size: 14px; }
  .read-time {  font-size: 11px ;  }
 
 /****************************************************/
