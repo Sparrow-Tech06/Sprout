@@ -3,20 +3,22 @@
     {
       "title": "Top Stories",
       "description": "Learn from inspiring short stories",
+      "link": "top-stories.html",
       "items": [
-        { "title": "The Frugal Seed", "img": "https://picsum.photos/200/300?random=1", "link": "story1.html" },
-        { "title": "Coin Collector", "img": "https://picsum.photos/200/300?random=2", "link": "story2.html" },
-        { "title": "Coin Collector", "img": "https://picsum.photos/200/300?random=2", "link": "story2.html" },
-        { "title": "Saving Habit", "img": "https://picsum.photos/200/300?random=3", "link": "story3.html" }
+        { "title": "The Frugal Seed", "img": "https://picsum.photos/200/300?random=1", "link": "story1.html", "readTime": "3 min read" },
+        { "title": "Coin Collector", "img": "https://picsum.photos/200/300?random=2", "link": "story2.html", "readTime": "2 min read" },
+        { "title": "Little Saver", "img": "https://picsum.photos/200/300?random=7", "link": "story7.html", "readTime": "4 min read" },
+        { "title": "Saving Habit", "img": "https://picsum.photos/200/300?random=3", "link": "story3.html", "readTime": "5 min read" }
       ]
     },
     {
       "title": "Money Lessons",
       "description": "Build your financial mindset",
+      "link": "money-lessons.html",
       "items": [
-        { "title": "Daily Saver", "img": "https://picsum.photos/200/300?random=4", "link": "story4.html" },
-        { "title": "Spend Smart", "img": "https://picsum.photos/200/300?random=5", "link": "story5.html" },
-        { "title": "Wealth Path", "img": "https://picsum.photos/200/300?random=6", "link": "story6.html" }
+        { "title": "Daily Saver", "img": "https://picsum.photos/200/300?random=4", "link": "story4.html", "readTime": "3 min read" },
+        { "title": "Spend Smart", "img": "https://picsum.photos/200/300?random=5", "link": "story5.html", "readTime": "6 min read" },
+        { "title": "Wealth Path", "img": "https://picsum.photos/200/300?random=6", "link": "story6.html", "readTime": "4 min read" }
       ]
     }
   ]
