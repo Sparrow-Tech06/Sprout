@@ -33,6 +33,8 @@
     .card-body .title { font-weight: 700; margin: 0; font-size: 14px; }
     .read-time { font-size: 11px; }
 
+    .heading { font-weight: 800; margin: 0; font-size: 18px; }
+    .description { font-size: 14px; }
     
  /**********************************************/
     .see-all {
