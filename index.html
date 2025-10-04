@@ -10,10 +10,10 @@
 
   <style>
     * {
-      margin: 0 ;
-      padding: 0 ;
-      box-sizing: border-box ;
-      user-select: none ;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
     }
     body {
       font-family: 'Poppins', sans-serif;
@@ -33,46 +33,40 @@
       width: 100%;
       object-fit: cover;
     }
+    .card-body .title { font-weight: 700; margin: 0; font-size: 14px; }
+    .read-time { font-size: 11px; }
 
-    .card-body .title {  
-      font-weight: 700; 
-      margin: 0; 
-      font-size: 14px; 
-    }
-    .read-time {  
-      font-size: 11px ;  
+    /******************** MAIN WIDTH ******************/
+    main {
+      max-width: 660px;
+      margin: auto;
+      display: none; /* pehle hidden */
     }
 
-    /**************** Skeleton Loader *****************/
+    /******************* GLOBAL SKELETON ********************/
+    #skeletonLoader {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
     .skeleton {
-      background: linear-gradient(90deg, #e0e0e0 25%, #f2f2f2 37%, #e0e0e0 63%);
-      background-size: 400% 100%;
+      background: linear-gradient(90deg, #e0e0e0 25%, #f7f7f7 50%, #e0e0e0 75%);
+      background-size: 200% 100%;
       animation: shimmer 1.2s infinite;
+      border-radius: 6px;
     }
     @keyframes shimmer {
-      0% { background-position: -400px 0; }
-      100% { background-position: 400px 0; }
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
     }
-    .skeleton-card {
-      width: 160px;
-      flex-shrink: 0;
-    }
-    .skeleton-img {
-      height: 90px;
-      border-radius: .25rem;
-    }
-    .skeleton-text {
-      height: 12px;
-      margin-top: 8px;
-      border-radius: 5px;
-    }
-
-    /**************** Container Max Width *****************/
-    main.container {
-      max-width: 660px;
-    }
+    .skeleton-img { width: 180px; height: 100px; }
+    .skeleton-text { width: 140px; height: 14px; }
   </style>
-  
 </head>
 <body>
 
@@ -86,38 +80,29 @@
     </nav>
   </header>
 
-  
-  <!-- Main Content -->
-  <main class="container py-3" id="storyContainer">
-    <!-- Skeleton placeholder -->
-    <section class="myskeleton" id="skeletonLoader">
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <div>
-          <div class="skeleton skeleton-text" style="width: 100px; height: 16px;"></div>
-          <div class="skeleton skeleton-text" style="width: 160px; height: 12px; margin-top: 6px;"></div>
-        </div>
-      </div>
-      <div class="d-flex overflow-auto gap-3 pb-2">
-        <div class="skeleton-card">
-          <div class="skeleton skeleton-img"></div>
-          <div class="skeleton skeleton-text" style="width: 80%;"></div>
-          <div class="skeleton skeleton-text" style="width: 50%;"></div>
-        </div>
-      </div>
-    </section>
-  </main>
+  <!-- Global Skeleton -->
+  <div id="skeletonLoader">
+    <div class="skeleton skeleton-img"></div>
+    <div class="skeleton skeleton-text"></div>
+    <div class="skeleton skeleton-text" style="width:100px;"></div>
+  </div>
 
+  <!-- Main Content -->
+  <main class="container py-3" id="storyContainer"></main>
 
   <script>
     fetch("data.json")
       .then(res => res.json())
       .then(data => {
         const container = document.getElementById("storyContainer");
-        container.innerHTML = ""; // skeleton remove kar do
+        
+        // skeleton hide, main show
+        document.getElementById("skeletonLoader").style.display = "none";
+        container.style.display = "block";
 
         data.sections.forEach(section => {
-          // Only 2 items show karo
-          const limitedItems = section.items.slice(0, 3);
+          // max 2 items only
+          const limitedItems = section.items.slice(0, 2);
 
           const sectionHTML = `
             <section class="mb-4">
@@ -134,7 +119,7 @@
               <div class="d-flex overflow-auto gap-3 pb-2">
                 ${limitedItems.map(item => `
                   <article>
-                    <a onclick="window.location.href='${item.link}';" class="text-decoration-none text-light">
+                    <a onclick="window.location.href='${item.link}';" class="see-all">
                       <div class="card" style="width: 160px; flex-shrink: 0;">
                         <img src="${item.img}" class="card-img-top" alt="${item.title}" draggable="false">
                         <div class="card-body">
@@ -155,5 +140,3 @@
 
 </body>
 </html>
-
-
