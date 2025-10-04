@@ -5,7 +5,7 @@
       "description": "Learn from inspiring short stories",
       "link": "stories/top-stories.html",
       "items": [
-        { "title": "The Frugal Seed", "img": "https://picsum.photos/200/300?random=1", "link": "story1.html", "readTime": "3 min read" },
+        { "title": "The Frugal Seed", "img": "https://picsum.photos/200/300?random=1", "link": "content/story1/story.html", "readTime": "3 min read" },
         { "title": "Coin Collector", "img": "https://picsum.photos/200/300?random=2", "link": "story2.html", "readTime": "2 min read" },
         { "title": "Little Saver", "img": "https://picsum.photos/200/300?random=7", "link": "story7.html", "readTime": "4 min read" },
         { "title": "Coin Collector", "img": "https://picsum.photos/200/300?random=2", "link": "story2.html", "readTime": "2 min read" },
