@@ -31,7 +31,18 @@
     }
     .card-body .title { font-weight: 700; margin: 0; font-size: 14px; }
     .read-time { font-size: 11px; }
-
+ /**********************************************/
+    .see-all {
+       background: #EDFBF3 ;
+       color: #2ECC71 ;
+       padding: 6px 8px;
+       border-radius: 10px ;
+       transition-duration: 0.3s;
+    }
+   .see-all:hover {
+       background: #2ECC71 ;
+       color: #ffffff ;
+    }
     /******************** MAIN WIDTH ******************/
     main {
       max-width: 660px;
