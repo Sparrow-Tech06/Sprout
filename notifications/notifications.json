@@ -1,0 +1,32 @@
+{
+  "2025-09-06": [
+    {
+      "id": 4,
+      "title": " New UI improvements",
+      "content": "Your new app have a added new attractive UI & functionality",
+      "time": "10:13 AM"
+    }
+  ],
+  "2025-09-04": [
+    {
+      "id": 1,
+      "title": "Payment Received",
+      "content": "You received a payment of $120.00 from John Smith",
+      "time": "08:39 AM"
+    },
+    {
+      "id": 2,
+      "title": "Payment Request",
+      "content": "James Smith requested a payment of $450.00",
+      "time": "09:00 AM"
+    }
+  ],
+  "2025-09-03": [
+    {
+      "id": 3,
+      "title": "Method Added",
+      "content": "Your new payment method has been added successfully",
+      "time": "07:00 AM"
+    }
+  ]
+}
