@@ -31,7 +31,7 @@
     }
     .card-body { padding: 8px 6px ; }    
     .card-body .title { font-weight: 700; margin: 0; font-size: 14px; }
-    .read-time { font-size: 11px; }
+    .read-time { font-size: 11px; margin: 4px 0px;}
 
     .heading { font-weight: 800; margin-bottom: 8px; font-size: 18px; color: #2ECC71 ; }
     .description { font-size: 14px; }
