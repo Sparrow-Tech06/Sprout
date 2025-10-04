@@ -16,7 +16,7 @@ fetch("data.json")
               <h5 class="m-0 text-success">${section.title}</h5>
               <small class="text-muted">${section.description}</small>
             </div>
-            <a href="#" class="text-decoration-none text-light">See all <i class="bi bi-arrow-right"></i></a>
+            <a href="stories/Top Stories.html" class="text-decoration-none text-light">See all <i class="bi bi-arrow-right"></i></a>
           </div>
           <div class="d-flex overflow-auto gap-3 pb-2">
             ${section.items
