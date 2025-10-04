@@ -75,76 +75,85 @@
   </main>
 
   <script>
-    let allItems = [];
+  let allItems = [];
 
-    fetch("data.json")
-      .then(res => res.json())
-      .then(data => {
-        data.sections.forEach(sec => {
-          sec.items.forEach(item => allItems.push(item));
-        });
+  fetch("data.json")
+    .then(res => res.json())
+    .then(data => {
+      data.sections.forEach(sec => {
+        sec.items.forEach(item => allItems.push(item));
       });
+    });
 
-    const searchBox = document.getElementById("searchBox");
-    const results = document.getElementById("results");
-    const suggestions = document.getElementById("suggestions");
+  const searchBox = document.getElementById("searchBox");
+  const results = document.getElementById("results");
+  const suggestions = document.getElementById("suggestions");
 
-    searchBox.addEventListener("input", e => {
-      const q = e.target.value.toLowerCase().trim();
-      results.innerHTML = "";
+  searchBox.addEventListener("input", e => {
+    const q = e.target.value.toLowerCase().trim();
+    results.innerHTML = "";
 
-      // hide suggestions if less than 3 chars
-      if (q.length < 3) {
-        suggestions.classList.add("d-none");
+    if (q === "") {
+      suggestions.classList.add("d-none"); // 🔥 clear hone par band karo
+      return;
+    }
+
+    // suggestions (only if 3+ chars)
+    if (q.length >= 3) {
+      const matches = allItems.filter(item => item.title.toLowerCase().includes(q)).slice(0,5);
+      if (matches.length > 0) {
+        suggestions.innerHTML = matches.map(m => `<div>${m.title}</div>`).join("");
+        suggestions.classList.remove("d-none");
       } else {
-        const matches = allItems.filter(item => item.title.toLowerCase().includes(q)).slice(0,5);
-        if (matches.length > 0) {
-          suggestions.innerHTML = matches.map(m => `<div>${m.title}</div>`).join("");
-          suggestions.classList.remove("d-none");
-        } else {
-          suggestions.classList.add("d-none");
-        }
+        suggestions.classList.add("d-none");
       }
+    } else {
+      suggestions.classList.add("d-none");
+    }
 
-      if (q === "") {
-        return; // don't show all items on empty
-      }
+    const filtered = allItems.filter(item => item.title.toLowerCase().includes(q));
 
-      const filtered = allItems.filter(item => item.title.toLowerCase().includes(q));
-
-      if(filtered.length === 0){
-        results.innerHTML = `
-          <div class="text-center w-100">
-            <h2 class="text-danger"> Ooops! No Result Found. </h2>
-            <p class="text-muted"> Please try refining the keyword or change the filters. </p>
-            <a onclick="window.history.back()" class="btn btn-outline-success btn-sm"> Go Back Home </a>
+    if(filtered.length === 0){
+      results.innerHTML = `
+        <div class="text-center w-100">
+          <h2 class="text-danger">No stories found.</h2>
+          <p class="text-muted">Try searching with different keywords.</p>
+          <a href="index.html" class="btn btn-outline-success btn-sm">Go Back Home</a>
+        </div>
+      `;
+    } else {
+      filtered.forEach(item => {
+        results.innerHTML += `
+          <div class="card bg-white text-dark border-0 story-card h-100 shadow-sm">
+            <img src="${item.image || 'placeholder.jpg'}" alt="${item.title}">
+            <div class="card-body d-flex flex-column">
+              <h6 class="card-title">${item.title}</h6>
+              <p class="card-text"><small>${item.readTime}</small></p>
+              <a href="${item.link}" class="btn btn-sm btn-success mt-auto">Read</a>
+            </div>
           </div>
         `;
-      } else {
-        filtered.forEach(item => {
-          results.innerHTML += `
-            <div class="card bg-white text-dark border-0 story-card h-100 shadow-sm">
-              <img src="${item.image || 'placeholder.jpg'}" alt="${item.title}">
-              <div class="card-body d-flex flex-column">
-                <h6 class="card-title">${item.title}</h6>
-                <p class="card-text"><small>${item.readTime}</small></p>
-                <a href="${item.link}" class="btn btn-sm btn-success mt-auto">Read</a>
-              </div>
-            </div>
-          `;
-        });
-      }
-    });
+      });
+    }
+  });
 
-    // click on suggestion fills input
-    suggestions.addEventListener("click", e => {
-      if (e.target.tagName === "DIV") {
-        searchBox.value = e.target.textContent;
-        suggestions.classList.add("d-none");
-        searchBox.dispatchEvent(new Event("input")); // trigger search
-      }
-    });
-  </script>
+  // click on suggestion fills input
+  suggestions.addEventListener("click", e => {
+    if (e.target.tagName === "DIV") {
+      searchBox.value = e.target.textContent;
+      suggestions.classList.add("d-none"); // 🔥 close after click
+      searchBox.dispatchEvent(new Event("input")); 
+    }
+  });
 
+  // blur event: hide popup after small delay (to allow click)
+  searchBox.addEventListener("blur", () => {
+    setTimeout(() => {
+      suggestions.classList.add("d-none"); // 🔥 close on blur
+    }, 200);
+  });
+</script>
+
+  
 </body>
 </html>
