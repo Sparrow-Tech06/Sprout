@@ -21,7 +21,7 @@
     }
       .search-pill {
            background: #ffffff ;
-           border: 2px solid #000 ;
+           border: 1px solid #000 ;
            border-radius: 999px;
            padding: .35rem .9rem;
            display: flex;
@@ -121,10 +121,10 @@
 
     if(filtered.length === 0){
       results.innerHTML = `
-        <div class="text-center w-100">
-          <h2 class="text-danger">No stories found.</h2>
-          <p class="text-muted">Try searching with different keywords.</p>
-          <a href="index.html" class="btn btn-outline-success btn-sm">Go Back Home</a>
+        <div class="text-center w-100 d-block">
+          <h2 class="text-danger"> No stories found. </h2>
+          <p class="text-muted"> Try searching with different keywords. </p>
+          <a onclick="window.history.back()" class="btn btn-success btn-sm"> Go Back Home </a>
         </div>
       `;
     } else {
