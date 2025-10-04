@@ -30,7 +30,7 @@
     /******************** MAIN WIDTH ******************/
     main {
       max-width: 660px;
-      margin: auto;
+      margin: 0 auto;
       display: none; /* pehle hidden */
     }
 
