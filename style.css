@@ -12,6 +12,8 @@ body {
 
 .card img {
   transition: transform 0.3s ease;
+  height: 120px ;
+  width: 160px ;
 }
 .card img:hover {
   transform: scale(1.05);
