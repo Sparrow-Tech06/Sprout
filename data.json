@@ -1,0 +1,22 @@
+{
+  "sections": [
+    {
+      "title": "Top Stories",
+      "description": "Learn from inspiring short stories",
+      "items": [
+        { "title": "The Frugal Seed", "img": "https://picsum.photos/200/300?random=1", "link": "story1.html" },
+        { "title": "Coin Collector", "img": "https://picsum.photos/200/300?random=2", "link": "story2.html" },
+        { "title": "Saving Habit", "img": "https://picsum.photos/200/300?random=3", "link": "story3.html" }
+      ]
+    },
+    {
+      "title": "Money Lessons",
+      "description": "Build your financial mindset",
+      "items": [
+        { "title": "Daily Saver", "img": "https://picsum.photos/200/300?random=4", "link": "story4.html" },
+        { "title": "Spend Smart", "img": "https://picsum.photos/200/300?random=5", "link": "story5.html" },
+        { "title": "Wealth Path", "img": "https://picsum.photos/200/300?random=6", "link": "story6.html" }
+      ]
+    }
+  ]
+}
