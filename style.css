@@ -1,20 +1,25 @@
+* {
+  margin: 0 ;
+  padding: 0 ;
+  box-sizing: border-box ;
+  user-select: none ;
+}
 body {
-  font-family: 'Poppins', sans-serif;
-}
-
-::-webkit-scrollbar {
-  height: 6px;
-}
-::-webkit-scrollbar-thumb {
-  background: #28a745;
-  border-radius: 10px;
-}
-
-.card img {
-  transition: transform 0.3s ease;
-  height: 120px ;
-  width: 160px ;
-}
-.card img:hover {
-  transform: scale(1.05);
-}
+      font-family: 'Poppins', sans-serif;
+    }
+    ::-webkit-scrollbar {
+      height: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #28a745;
+      border-radius: 10px;
+    }
+    .card img {
+      transition: transform 0.3s ease;
+      height: 80px;
+      width: 140px;
+      object-fit: cover;
+    }
+    .card img:hover {
+      transform: scale(1.05);
+    }
