@@ -81,7 +81,7 @@
 
 /*****************************************************************/
     header { position: sticky; top: 0; }
-    .header-btn {
+    .header-btn i {
       margin-left: 10px;
       color: #000;
       transition-duration: 0.3s;
