@@ -4,23 +4,92 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sprout - Money Saving Stories</title>
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    ::-webkit-scrollbar {
+      height: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #28a745;
+      border-radius: 10px;
+    }
+    .card img {
+      transition: transform 0.3s ease;
+      height: 120px;
+      width: 160px;
+      object-fit: cover;
+    }
+    .card img:hover {
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 <body>
 
-  <nav class="navbar bg-dark sticky-top px-3">
-    <h4 class="text-success m-0">Sprout</h4>
-    <form class="d-flex ms-auto" onsubmit="return searchRedirect(event)">
-      <input class="form-control me-2" type="search" id="searchInput" placeholder="Search stories...">
-      <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
-    </form>
-  </nav>
+  <!-- Header -->
+  <header>
+    <nav class="navbar bg-dark sticky-top px-3">
+      <h1 class="text-success fs-4 m-0">Sprout</h1>
+      <a href="search.html" class="btn btn-outline-success ms-auto">
+        <i class="bi bi-search"></i>
+      </a>
+    </nav>
+  </header>
 
-  <div class="container py-3" id="storyContainer"></div>
+  <!-- Main Content -->
+  <main class="container py-3" id="storyContainer"></main>
 
-  <script src="script.js"></script>
-  
+  <!-- Footer -->
+  <footer class="bg-dark text-center text-light py-3">
+    <small>&copy; 2025 Sprout. All rights reserved.</small>
+  </footer>
+
+  <script>
+    fetch("data.json")
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById("storyContainer");
+
+        data.sections.forEach(section => {
+          const sectionHTML = `
+            <section class="mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <div>
+                  <h2 class="h5 text-success m-0">${section.title}</h2>
+                  <p class="text-muted small m-0">${section.description}</p>
+                </div>
+                <a href="${section.link}" class="text-decoration-none text-light">
+                  See all <i class="bi bi-arrow-right"></i>
+                </a>
+              </div>
+              
+              <div class="d-flex overflow-auto gap-3 pb-2">
+                ${section.items.map(item => `
+                  <article>
+                    <a href="${item.link}" class="text-decoration-none text-light">
+                      <div class="card bg-secondary border-0 rounded-3" style="width: 160px; flex-shrink: 0;">
+                        <img src="${item.img}" class="card-img-top rounded-top-3" alt="${item.title}">
+                        <div class="card-body text-center p-2">
+                          <h3 class="h6 m-0">${item.title}</h3>
+                          <p class="small text-light-50 m-0">${item.readTime}</p>
+                        </div>
+                      </div>
+                    </a>
+                  </article>
+                `).join("")}
+              </div>
+            </section>
+          `;
+          container.innerHTML += sectionHTML;
+        });
+      });
+  </script>
+
 </body>
 </html>
