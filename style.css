@@ -81,7 +81,7 @@
     .skeleton-text { width: 180px; height: 12px; }
 
 /*****************************************************************/
-    header { position: sticky; top: 0; background: #F6F8FA; z-index: 999; }
+    header { position: sticky; top: 0; background: #FFFFFF ; z-index: 999; }
     .header-btn i {
       margin-left: 10px;
       color: #000;
