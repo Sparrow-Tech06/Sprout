@@ -90,7 +90,7 @@
       padding: 4px 6px;
       border-radius: 8px ;
     }
-    .header-btn:hover {
+    .header-btn i:hover {
        background: #2ECC71 ;
        color: #ffffff ;
     }
