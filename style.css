@@ -94,6 +94,28 @@
        background: #2ECC71 ;
        color: #ffffff ;
     }
+/************** Toggle Button ****************/
+    .toggle-btn {
+      font-size: 1.6rem; /* increase icon size */
+      border: none;
+      background: none;
+      color: #ff5722; /* custom color */
+      padding: 0.25rem 0.5rem;
+    }
+    .toggle-btn:focus {
+      box-shadow: none;
+    }
+   /* Close Button */
+    .btn-close-custom {
+      border: none;
+      background: none;
+      color: #ff5722; /* custom color */
+      font-size: 2rem;
+    }
+    .btn-close-custom:focus {
+      box-shadow: none;
+    }
+/**************************************/
    .offcanvas { max-width: 80% ; }
 
 
