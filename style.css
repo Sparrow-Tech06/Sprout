@@ -78,5 +78,22 @@
     }
     .skeleton-img { width: 240px; height: 150px; }
     .skeleton-text { width: 180px; height: 12px; }
+
+/*****************************************************************/
+    .header-btn {
+      margin-left: 10px;
+      color: #000;
+      text-decoration: none;
+      font-size: 1.2rem;
+      background: rgba(237, 251, 243, 0.3);
+    }
+    .header-btn:hover {
+       background: #2ECC71 ;
+       color: #ffffff ;
+    }
+   
+
+
+
     
   
