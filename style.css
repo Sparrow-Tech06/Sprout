@@ -49,7 +49,7 @@
        color: #ffffff ;
     }
     /******************** MAIN WIDTH ******************/
-    main {
+    .container {
       max-width: 660px;
       margin: 0 auto;
       display: none; /* pehle hidden */
