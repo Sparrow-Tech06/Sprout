@@ -14,15 +14,16 @@ body {
       background: #28a745;
       border-radius: 10px;
     }
+
+/***********************************************/
     .card img {
       transition: transform 0.3s ease;
       height: 80px;
       width: 140px;
       object-fit: cover;
     }
-    .card img:hover {
-      transform: scale(1.05);
-    }
 
  .card-body h3 {  font-weight: 700; margin: 0;  }
  .read-time {    }
+
+/****************************************************/
