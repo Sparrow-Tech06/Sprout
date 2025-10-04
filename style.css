@@ -29,8 +29,11 @@
       width: 100%;
       object-fit: cover;
     }
+    .card-body { padding: 6px 4px ; }    
     .card-body .title { font-weight: 700; margin: 0; font-size: 14px; }
     .read-time { font-size: 11px; }
+
+    
  /**********************************************/
     .see-all {
        background: #EDFBF3 ;
