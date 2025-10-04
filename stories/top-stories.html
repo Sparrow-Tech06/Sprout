@@ -20,7 +20,7 @@
   <main class="container py-3" id="sectionContainer"></main>
 
   <script>
-    fetch("data.json")
+    fetch("../data.json")
       .then(res => res.json())
       .then(data => {
         const container = document.getElementById("sectionContainer");
