@@ -84,9 +84,11 @@
     .header-btn {
       margin-left: 10px;
       color: #000;
-      text-decoration: none;
+      transition-duration: 0.3s;
       font-size: 1.2rem;
-      background: rgba(237, 251, 243, 0.3);
+      background: #EDFBF3 ;
+      padding: 4px;
+      border-radius: 10px ;
     }
     .header-btn:hover {
        background: #2ECC71 ;
