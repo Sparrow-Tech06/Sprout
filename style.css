@@ -16,7 +16,11 @@
       background: #28a745;
       border-radius: 10px;
     }
-
+   a {
+      text-decoration: none;
+      underline: none ;
+      color: #000 ;
+   }
     /***********************************************/
     .card { cursor: pointer ;}
     .card img {
