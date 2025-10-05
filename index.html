@@ -97,8 +97,8 @@
                 ${limitedItems.map(item => `
                   <article>
                     <a onclick="window.location.href='${item.link}';" class="">
-                      <div class="card" style="width: 160px; flex-shrink: 0;">
-                        <img src="${item.img}" class="card-img-top" alt="${item.title}" draggable="false">
+                      <div class="card border-0 shadow-sm" style="width: 160px; flex-shrink: 0;">
+                        <img src="${item.img}" class="card-img-top" alt="${item.title}" draggable="false" loading="lazy">
                         <div class="card-body">
                           <h3 class="title">${item.title}</h3>
                           <p class="read-time"> <i class="bi bi-stopwatch"></i> ${item.readTime}</p>
