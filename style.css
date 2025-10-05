@@ -22,7 +22,7 @@
       color: #000 ;
    }
     /***********************************************/
-    .card { cursor: pointer ;}
+    .card { cursor: pointer ; }
     .card img {
       transition: transform 0.3s ease;
       height: 90px;
