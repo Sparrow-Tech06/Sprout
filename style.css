@@ -81,26 +81,23 @@
     .skeleton-text { width: 180px; height: 12px; }
 
 /*****************************************************************/
-    header { position: sticky; top: 0; background: #FFFFFF ; z-index: 999; }
+    header { position: sticky; top: 0; background: #24945A ; z-index: 999; }
     .header-btn i {
       margin-left: 10px;
       color: #000;
       transition-duration: 0.3s;
       font-size: 1.2rem;
-      background: #EDFBF3 ;
+      background: rgba(255,255,255,0.3) ;
       padding: 4px 8px;
       border-radius: 8px ;
     }
-    .header-btn i:hover {
-       background: #2ECC71 ;
-       color: #ffffff ;
-    }
+
 /************** Toggle Button ****************/
     .toggle-btn {
       font-size: 1.6rem; /* increase icon size */
       border: none;
       background: none;
-      color: #000000; /* custom color */
+      color: #ffffff ; /* custom color */
       padding: 0.25rem 0.5rem;
     }
     .toggle-btn:focus {
@@ -110,7 +107,7 @@
     .btn-close-custom {
       border: none;
       background: none;
-      color: #000000; /* custom color */
+      color: #24945A ; /* custom color */
       font-size: 2rem;
     }
     .btn-close-custom:focus {
