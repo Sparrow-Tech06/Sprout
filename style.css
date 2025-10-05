@@ -84,7 +84,7 @@
     header { position: sticky; top: 0; background: #24945A ; z-index: 999; }
     .header-btn i {
       margin-left: 10px;
-      color: #000;
+      color: #fff ;
       transition-duration: 0.3s;
       font-size: 1.2rem;
       background: rgba(255,255,255,0.3) ;
