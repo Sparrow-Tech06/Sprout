@@ -6,42 +6,27 @@
     "image": "https://picsum.photos/800/450?random=10",
     "tag": "STORY",
     "duration": "3 min read",
-    "link": "story1.html"
+    "link": "story1.html",
+    "isNew": true
   },
   {
     "id": 2,
     "title": "The 30-Day No-Spend Challenge",
-    "subtitle": "A fun way to build discipline and boost your wallet.",
+    "subtitle": "A fun way to build discipline and boost your savings.",
     "image": "https://picsum.photos/800/450?random=11",
     "tag": "CHALLENGE",
     "duration": "4 min read",
-    "link": "story2.html"
+    "link": "story2.html",
+    "isNew": false
   },
   {
     "id": 3,
     "title": "Small Steps to Big Savings",
-    "subtitle": "How Aarav saved money by changing 5 daily habits.",
+    "subtitle": "How Aarav saved money with 5 tiny daily habit changes.",
     "image": "https://picsum.photos/800/450?random=12",
     "tag": "HABITS",
     "duration": "5 min read",
-    "link": "story3.html"
-  },
-  {
-    "id": 4,
-    "title": "Pocket Money to Pocket Growth",
-    "subtitle": "Meera’s story of saving ₹500 every Sunday.",
-    "image": "https://picsum.photos/800/450?random=13",
-    "tag": "WEEKLY",
-    "duration": "2 min read",
-    "link": "story4.html"
-  },
-  {
-    "id": 5,
-    "title": "How A Daily ₹50 Habit Created A New Lifestyle",
-    "subtitle": "A daily routine that became a lifelong saving hack.",
-    "image": "https://picsum.photos/800/450?random=14",
-    "tag": "DAILY",
-    "duration": "3 min read",
-    "link": "story5.html"
+    "link": "story3.html",
+    "isNew": true
   }
 ]
