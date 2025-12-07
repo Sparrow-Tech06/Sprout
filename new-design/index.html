@@ -2,8 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no,viewport-fit=cover"> 
+  
   <title>Money Story App</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -18,7 +22,7 @@
 
     body {
       background: #ffffff;
-      font-family: "Inter", sans-serif;
+      font-family: 'Inter', system-ui, sans-serif;
     }
 
     /* STORY CARD */
@@ -32,19 +36,14 @@
       position: relative;
     }
 
-    .story-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-    }
-
-    /* IMAGE */
+    /*********** IMAGE ************/
     .thumb img {
       width: 100%;
-      aspect-ratio: 16/9;
-      object-fit: cover;
+      aspect-ratio: 16/7;
+      object-fit: fill ;
     }
 
-    /* Default tag */
+    /*********** Default tag ***********/
     .ribbon {
       position: absolute;
       top: 12px;
@@ -57,7 +56,7 @@
       font-size: 0.75rem;
     }
 
-    /* NEW TAG */
+    /********** NEW TAG ***********/
     .new-tag {
       position: absolute;
       top: 12px;
