@@ -106,7 +106,7 @@ fetch("stories.json")
 
       box.innerHTML += `
         <div class="col-12">
-          <a href="${story.link}" class="text-decoration-none text-dark">
+          <a onclick="window.location.href='${story.link}';" class="text-decoration-none text-dark">
             <article class="story-card">
 
               <div class="position-relative thumb">
