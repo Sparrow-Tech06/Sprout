@@ -17,6 +17,7 @@
   <style>
     :root {
       --bg-color: #ffffff ;
+      --text-color: #000000 ;
       --primary: #5b8dfc;
       --main-color: #ffffff ;
       --story-card: #ffffff ;
@@ -28,10 +29,10 @@
   @media (prefers-color-scheme: dark) {
     :root {
       --bg-color: #212529 ;
+      --text-color: #ffffff ;
       --primary: #5b8dfc;
       --main-color: #343a40 ;
       --story-card: #343a40 ;
-      --radius: 14px;
       --shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
       --border: 1px solid rgba(0,0,0,0.08);
     }
@@ -108,7 +109,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            color: #fff;
+            color: var(--text-color) ;
         }
   /* Remove toggle button borders (normal, hover, active) */
 .btn-clean {
@@ -122,7 +123,7 @@
     border: none !important;
     box-shadow: none !important;
     background-color: transparent !important;
-    color: #ffffff !important;
+    color: #000000 !important;
 }
 
 /* Remove close button blue outline */
