@@ -98,10 +98,59 @@
 </head>
 <body>
 
-<header class="p-3">
-  <h6 class="fw-semibold"><i class="bi bi-calendar"></i> Sunday, December 7</h6>
-  <h2 class="fw-bold">Money Stories</h2>
-</header>
+<!-- Header -->
+    <header class="header-section navbar">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+
+        <!-- Left: Toggle + Brand -->
+        <div class="d-flex align-items-center gap-1">
+
+           <!-- Clean Toggle Button -->
+            <button class="btn btn-clean" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
+                <i class="bi bi-list fs-3"></i>
+            </button>
+            <h1 id="appTitle" class="m-0 fw-bold fs-6"> KnowUp </h1>
+        </div>
+            
+        <!-- Right: Select -->
+        <div class="d-flex align-items-center gap-2">
+            <select id="languageSelect">
+                <option value="en"> English </option>
+                <option value="bn"> Bengali </option>
+                <option value="hi"> Hindi </option>
+            </select>
+        </div>
+    </header>
+
+
+    <!-- Offcanvas Sidebar -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title"> KnowUp </h5>
+
+        <!-- Clean Close Button -->
+        <button class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+
+    <div class="offcanvas-body">
+        <ul>
+           <li><a href="#"><i class="bi bi-person-circle"></i> My Profile </a></li>
+           <li><a href="#"><i class="bi bi-people"></i> New Group</a></li>
+           <li><a href="#"><i class="bi bi-person-lines-fill"></i> Suggest your facts </a></li>
+           <li><a href="#"><i class="bi bi-bookmark"></i> My Saved Facts </a></li>
+           <li><a href="#"><i class="bi bi-person-plus"></i> Invite Friends </a></li>
+      </ul>
+
+       <hr class="my-1">
+
+       <ul>
+         <li><a href="#"><i class="bi bi-question-circle"></i> FAQ </a></li>
+         <li><a href="#"><i class="bi bi-question-circle"></i> Terms of Use </a></li>
+         <li><a href="#"><i class="bi bi-question-circle"></i> Privacy Policy </a></li>
+         <li><a href="#"><i class="bi bi-telephone"></i> Contact Us </a></li>
+      </ul>
+    </div>
+</div>
 
 <main class="container pb-5">
   <section id="story-container" class="row g-3">
