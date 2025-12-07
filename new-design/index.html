@@ -29,6 +29,7 @@
       box-shadow: var(--shadow);
       overflow: hidden;
       transition: 0.25s ease;
+      position: relative;
     }
 
     .story-card:hover {
@@ -43,7 +44,7 @@
       object-fit: cover;
     }
 
-    /* TAG RIBBONS */
+    /* Default tag */
     .ribbon {
       position: absolute;
       top: 12px;
@@ -56,6 +57,7 @@
       font-size: 0.75rem;
     }
 
+    /* NEW TAG */
     .new-tag {
       position: absolute;
       top: 12px;
@@ -78,48 +80,54 @@
 <body>
 
 <header class="p-3">
-  <h6 class="fw-semibold"><i class="bi bi-calendar-date"></i> Sunday, December 7</h6>
+  <h6 class="fw-semibold"><i class="bi bi-calendar"></i> Sunday, December 7</h6>
   <h2 class="fw-bold">Money Stories</h2>
 </header>
 
 <main class="container pb-5">
   <section id="story-container" class="row g-3">
-    <!-- JSON LOADED CARDS -->
+    <!-- JSON DATA LOADED HERE -->
   </section>
 </main>
 
 <script>
-  fetch("stories.json")
-    .then(res => res.json())
-    .then(data => {
-      const box = document.getElementById("story-container");
+fetch("stories.json")
+  .then(res => res.json())
+  .then(data => {
+    const box = document.getElementById("story-container");
 
-      data.forEach(story => {
-        box.innerHTML += `
-          <div class="col-12">
-            <a href="${story.link}" class="text-decoration-none text-dark">
-              <article class="story-card">
+    data.forEach(story => {
 
-                <div class="position-relative thumb">
-                  <img src="${story.image}" alt="story">
+      // 🔥 NEW TAG CHECK (Correct & Working)
+      const newTag = story.isNew === true
+        ? `<div class="new-tag">NEW</div>`
+        : "";
 
-                  <!-- NEW TAG SYSTEM -->
-                  ${story.isNew ? `<div class="new-tag">NEW</div>` : ""}
+      box.innerHTML += `
+        <div class="col-12">
+          <a href="${story.link}" class="text-decoration-none text-dark">
+            <article class="story-card">
 
-                  <div class="ribbon">${story.tag}</div>
-                </div>
+              <div class="position-relative thumb">
+                <img src="${story.image}" alt="story image">
 
-                <div class="p-3">
-                  <h4 class="fw-bold">${story.title}</h4>
-                  <p class="mb-1">${story.subtitle}</p>
-                  <small><i class="bi bi-clock"></i> ${story.duration}</small>
-                </div>
+                ${newTag}
 
-              </article>
-            </a>
-          </div>`;
-      });
+                <div class="ribbon">${story.tag}</div>
+              </div>
+
+              <div class="p-3">
+                <h4 class="fw-bold">${story.title}</h4>
+                <p class="mb-1">${story.subtitle}</p>
+                <small><i class="bi bi-clock"></i> ${story.duration}</small>
+              </div>
+
+            </article>
+          </a>
+        </div>
+      `;
     });
+  });
 </script>
 
 </body>
