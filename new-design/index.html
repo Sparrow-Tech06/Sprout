@@ -16,11 +16,23 @@
   
   <style>
     :root {
+      --bg-color: ;
       --primary: #5b8dfc;
+      --story-card: #ffffff ;
       --radius: 14px;
       --shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
       --border: 1px solid rgba(0,0,0,0.08);
     }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-color: #212529 ;
+      --primary: #5b8dfc;
+      --story-card: #343a40 ;
+      --radius: 14px;
+      --shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      --border: 1px solid rgba(0,0,0,0.08);
+    }
+  }
   /***************************/
     * {
       margin: 0 ;
@@ -29,13 +41,13 @@
       user-select: none ;
     }
     body {
-      background: #ffffff;
+      background: var(--bg-color) ;
       font-family: 'Inter', system-ui, sans-serif;
     }
 
     /**************** STORY CARD **************/
     .story-card {
-      background: #ffffff;
+      background: var(--story-card) ;
       border-radius: var(--radius);
       border: var(--border);
       box-shadow: var(--shadow);
