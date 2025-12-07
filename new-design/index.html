@@ -1,1 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Money Story App</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #5b8dfc;
+      --radius: 18px;
+      --shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    body {
+      background: #ffffff;
+      font-family: "Inter", sans-serif;
+    }
+
+    .story-card {
+      background: #ffffff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: 0.25s ease;
+    }
+
+    .story-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+
+    .thumb img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+    }
+
+    .ribbon {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--primary);
+      padding: 6px 12px;
+      border-radius: 50px;
+      color: white;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+<header class="p-3">
+  <h5 class="fw-semibold">Sunday, December 7</h5>
+  <h2 class="fw-bold">Money Stories</h2>
+</header>
+
+<main class="container pb-5">
+  <section id="story-container" class="row g-3">
+    <!-- Dynamic Cards from JSON will load here -->
+  </section>
+</main>
+
+<script>
+  fetch("stories.json")
+    .then(res => res.json())
+    .then(data => {
+      const box = document.getElementById("story-container");
+
+      data.forEach(story => {
+        box.innerHTML += `
+          <div class="col-12">
+            <a href="${story.link}" class="text-decoration-none text-dark">
+              <article class="story-card">
+                <div class="position-relative thumb">
+                  <img src="${story.image}" alt="story image">
+                  <div class="ribbon">${story.tag}</div>
+                </div>
+                <div class="p-3">
+                  <h4 class="fw-bold">${story.title}</h4>
+                  <p class="mb-1">${story.subtitle}</p>
+                  <small>${story.duration}</small>
+                </div>
+              </article>
+            </a>
+          </div>`;
+      });
+    });
+</script>
+
+</body>
+</html>
 
