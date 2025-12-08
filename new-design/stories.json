@@ -6,7 +6,7 @@
     "image": "https://picsum.photos/800/450?random=10",
     "tag": "STORY",
     "duration": "3 min read",
-    "link": "story.html?id=story1",
+    "link": "story.html?id=story4",
     "isNew": true
   },
   {
@@ -16,7 +16,7 @@
     "image": "https://picsum.photos/800/450?random=11",
     "tag": "CHALLENGE",
     "duration": "4 min read",
-    "link": "story2.html",
+    "link": "story.html?id=story3",
     "isNew": false
   },
   {
@@ -26,7 +26,7 @@
     "image": "https://picsum.photos/800/450?random=12",
     "tag": "HABITS",
     "duration": "5 min read",
-    "link": "story3.html",
+    "link": "story.html?id=story2",
     "isNew": false
   }, 
   {
@@ -36,7 +36,7 @@
     "image": "https://picsum.photos/800/450?random=11",
     "tag": "CHALLENGE",
     "duration": "4 min read",
-    "link": "story2.html",
+    "link": "story.html?id=story1",
     "isNew": false
   }
 ]
