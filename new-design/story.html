@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Story</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    img { width: 100%; border-radius: 12px; }
+  </style>
+</head>
+<body>
+
+  <h1 id="title"></h1>
+  <p id="tag"></p>
+  <p id="time"></p>
+  <img id="image">
+  <div id="content"></div>
+
+<script>
+  // URL theke ?id=story3 niye asha
+  const params = new URLSearchParams(window.location.search);
+  const storyId = params.get("id"); // story1, story2 ...
+
+  // JSON load
+  fetch(`stories/${storyId}.json`)
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("title").innerText = data.title;
+        document.getElementById("tag").innerText = data.tag;
+        document.getElementById("time").innerText = data.time;
+        document.getElementById("image").src = data.image;
+        document.getElementById("content").innerHTML = data.content;
+    })
+    .catch(err => {
+        document.body.innerHTML = "<h2>Story not found</h2>";
+    });
+</script>
+
+</body>
+</html>
