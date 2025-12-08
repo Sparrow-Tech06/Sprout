@@ -6,7 +6,7 @@
     "image": "https://picsum.photos/800/450?random=10",
     "tag": "STORY",
     "duration": "3 min read",
-    "link": "story1.html",
+    "link": "story.html?id=story1",
     "isNew": true
   },
   {
