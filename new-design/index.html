@@ -108,8 +108,13 @@
             align-items: center;
             position: sticky;
             top: 0;
-            z-index: 100;
+            transition: transform 0.3s ease-in-out; 
+            z-index: 1030;
             color: var(--text-color) ;
+        }
+  /* Class to hide the navbar */
+        .navbar-hidden {
+            transform: translateY(-100%);
         }
   /* Remove toggle button borders (normal, hover, active) */
 .btn-clean {
@@ -170,7 +175,7 @@
 <body>
 
 <!-- Header -->
-    <header class="header-section navbar">
+    <header id="main-header" class="header-section navbar">
         <div class="container-fluid d-flex justify-content-between align-items-center">
 
         <!-- Left: Toggle + Brand -->
@@ -186,7 +191,7 @@
 
 
     <!-- Offcanvas Sidebar -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar" aria-labelledby="offcanvasNavbarLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title"> KnowUp </h5>
 
@@ -263,6 +268,30 @@ fetch("stories.json")
     });
   });
 </script>
+
+<script>
+        let prevScrollPos = window.pageYOffset;
+        const header = document.getElementById("main-header");
+        const scrollThreshold = 50; // Header hides only after scrolling 50px down
+
+        window.onscroll = function() {
+            const currentScrollPos = window.pageYOffset;
+
+            // 1. Scrolling Down (current position > previous position) AND scrolled past the threshold
+            if (currentScrollPos > scrollThreshold && prevScrollPos < currentScrollPos) {
+                // Hide Navbar
+                header.classList.add("navbar-hidden");
+            } 
+            // 2. Scrolling Up (current position < previous position) OR scrolled back to top
+            else {
+                // Show Navbar
+                header.classList.remove("navbar-hidden");
+            }
+
+            // Update previous scroll position
+            prevScrollPos = currentScrollPos;
+        }
+    </script>
 
 </body>
 </html>
