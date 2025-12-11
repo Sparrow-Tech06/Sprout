@@ -82,14 +82,15 @@
                                                     {{ story.readingTime }} min read
                                                 </small>
                                             </p>
-                                        </div>
+                                        
                                         <button 
                                             class="btn btn-outline-danger btn-sm"
                                             @click.stop="removeStory(story.id)"
                                             :aria-label="`Unsave ${story.title}`"
                                         >
                                             <i class="bi bi-bookmark-dash"></i>
-                                        </button>
+                                        </button> 
+                                      </div>
                                     </div>
                                 </div>
                             </div>
