@@ -1,36 +1,142 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Saved Stories</title>
-  <style>
-    body { font-family: Arial; padding: 20px; }
-    .item {
-      padding: 12px;
-      border-radius: 10px;
-      background: #f2f2f2;
-      margin-bottom: 12px;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Saved Stories</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<style>
+  body {
+    font-family: Arial;
+    padding: 20px;
+    background: #fafafa;
+  }
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  /* Card */
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    gap: 12px;
+  }
+
+  .card img {
+    width: 90px;
+    height: 90px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  .info {
+    flex-grow: 1;
+  }
+
+  .title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .tag {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 6px;
+  }
+
+  .time {
+    font-size: 12px;
+    color: #888;
+  }
+
+  .unsaveBtn {
+    margin-top: 8px;
+    padding: 4px 8px;
+    font-size: 12px;
+    border: none;
+    border-radius: 6px;
+    background: #ffe0e0;
+    color: #c00;
+  }
+</style>
 </head>
+
 <body>
 
 <h2>⭐ Saved Stories</h2>
-<div id="list"></div>
+<div id="grid" class="grid"></div>
 
 <script>
-const saved = JSON.parse(localStorage.getItem("savedStories")) || [];
+// Load saved IDs from localStorage
+let savedIds = JSON.parse(localStorage.getItem("savedStories")) || [];
 
-if(saved.length === 0){
-  document.getElementById("list").innerHTML = "<p>No saved stories yet.</p>";
+if (savedIds.length === 0) {
+  document.getElementById("grid").innerHTML = "<p>No saved stories yet.</p>";
 }
 
-saved.forEach(id => {
-  const link = document.createElement("a");
-  link.href = `/story.html?id=${id}`;
-  link.innerHTML = `<div class='item'>📘 ${id}</div>`;
-  document.getElementById("list").appendChild(link);
+// For each story fetch full data
+savedIds.forEach(id => {
+  fetch(`/stories/${id}.json`)
+    .then(res => res.json())
+    .then(data => {
+      // Calculate reading time
+      const words = data.content.join(" ").split(" ").length;
+      const minutes = Math.ceil(words / 120);
+
+      // Create card
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src="${data.image}">
+        <div class="info">
+          <div class="title">${data.title}</div>
+          <div class="tag">${data.tag}</div>
+          <div class="time">${minutes} min read</div>
+
+          <button class="unsaveBtn">Unsave</button>
+        </div>
+      `;
+
+      // On click open story
+      card.onclick = (e) => {
+        if (!e.target.classList.contains("unsaveBtn")) {
+          window.location.href = "/story.html?id=" + id;
+        }
+      };
+
+      // Unsave button
+      card.querySelector(".unsaveBtn").onclick = (e) => {
+        e.stopPropagation(); // stop card click
+        removeSave(id, card);
+      };
+
+      document.getElementById("grid").appendChild(card);
+    });
 });
+
+
+// Unsave function
+function removeSave(id, cardElement) {
+  savedIds = savedIds.filter(item => item !== id);
+  localStorage.setItem("savedStories", JSON.stringify(savedIds));
+
+  cardElement.remove();
+
+  if (savedIds.length === 0) {
+    document.getElementById("grid").innerHTML = "<p>No saved stories yet.</p>";
+  }
+}
 </script>
 
 </body>
