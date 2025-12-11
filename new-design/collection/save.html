@@ -1,143 +1,304 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Saved Stories</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-<style>
-  body {
-    font-family: Arial;
-    padding: 20px;
-    background: #fafafa;
-  }
-
-  h2 {
-    margin-bottom: 20px;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-
-  /* Card */
-  .card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    display: flex;
-    gap: 12px;
-  }
-
-  .card img {
-    width: 90px;
-    height: 90px;
-    border-radius: 10px;
-    object-fit: cover;
-  }
-
-  .info {
-    flex-grow: 1;
-  }
-
-  .title {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 6px;
-  }
-
-  .tag {
-    font-size: 13px;
-    color: #666;
-    margin-bottom: 6px;
-  }
-
-  .time {
-    font-size: 12px;
-    color: #888;
-  }
-
-  .unsaveBtn {
-    margin-top: 8px;
-    padding: 4px 8px;
-    font-size: 12px;
-    border: none;
-    border-radius: 6px;
-    background: #ffe0e0;
-    color: #c00;
-  }
-</style>
+    <meta charset="UTF-8">
+    <title>Saved Stories</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 20px;
+            padding-bottom: 40px;
+        }
+        
+        .header-section {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 30px;
+            padding: 25px 20px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(106, 17, 203, 0.15);
+        }
+        
+        .story-card {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            background-color: white;
+        }
+        
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .story-image {
+            height: 160px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .story-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            background-color: #e9ecef;
+        }
+        
+        .story-title {
+            font-weight: 700;
+            color: #212529;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .story-meta {
+            color: #6c757d;
+            font-size: 0.85rem;
+        }
+        
+        .unsave-btn {
+            background-color: #fff5f5;
+            color: #dc3545;
+            border: 1px solid #f8d7da;
+            border-radius: 8px;
+            padding: 6px 15px;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        
+        .unsave-btn:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+        
+        .empty-state-icon {
+            font-size: 4rem;
+            color: #dee2e6;
+            margin-bottom: 20px;
+        }
+        
+        .toast-container {
+            z-index: 1050;
+        }
+        
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .card-link:hover {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 576px) {
+            .story-card {
+                margin-bottom: 15px;
+            }
+            
+            .header-section {
+                padding: 20px 15px;
+                margin-left: -12px;
+                margin-right: -12px;
+                border-radius: 0;
+            }
+            
+            .container-fluid {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .story-image {
+                height: 180px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-
-<h2>⭐ Saved Stories</h2>
-<div id="grid" class="grid"></div>
-
-<script>
-// Load saved IDs from localStorage
-let savedIds = JSON.parse(localStorage.getItem("savedStories")) || [];
-
-if (savedIds.length === 0) {
-  document.getElementById("grid").innerHTML = "<p>No saved stories yet.</p>";
-}
-
-// For each story fetch full data
-savedIds.forEach(id => {
-  fetch(`../stories/${id}.json`)
-    .then(res => res.json())
-    .then(data => {
-      // Calculate reading time
-      const words = data.content.join(" ").split(" ").length;
-      const minutes = Math.ceil(words / 120);
-
-      // Create card
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <img src="${data.image}">
-        <div class="info">
-          <div class="title">${data.title}</div>
-          <div class="tag">${data.tag}</div>
-          <div class="time">${minutes} min read</div>
-
-          <button class="unsaveBtn">Unsave</button>
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="unsaveToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    Story removed from saved items
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
         </div>
-      `;
+    </div>
 
-      // On click open story
-      card.onclick = (e) => {
-        if (!e.target.classList.contains("unsaveBtn")) {
-          window.location.href = "../story.html?id=" + id;
+    <!-- Header Section -->
+    <header class="header-section">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-bookmark-star-fill fs-1 me-3"></i>
+                <div>
+                    <h1 class="h3 mb-1">Saved Stories</h1>
+                    <p class="mb-0 opacity-75">Your personal collection of stories to read later</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container-fluid">
+        <!-- Saved Stories Grid -->
+        <section id="storiesGrid">
+            <div class="row g-4" id="gridRow">
+                <!-- Cards will be dynamically inserted here -->
+            </div>
+            
+            <!-- Empty State -->
+            <article id="emptyState" class="empty-state" style="display: none;">
+                <i class="bi bi-bookmark empty-state-icon"></i>
+                <h2 class="h4 mb-3">No saved stories yet</h2>
+                <p class="mb-4">Start saving stories to build your reading list. They will appear here for easy access.</p>
+                <a href="../index.html" class="btn btn-primary">
+                    <i class="bi bi-compass me-2"></i>Browse Stories
+                </a>
+            </article>
+        </section>
+    </main>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Initialize toast
+        const unsaveToast = new bootstrap.Toast(document.getElementById('unsaveToast'), {
+            delay: 3000
+        });
+        
+        // Load saved IDs from localStorage
+        let savedIds = JSON.parse(localStorage.getItem("savedStories")) || [];
+        const gridRow = document.getElementById("gridRow");
+        const emptyState = document.getElementById("emptyState");
+        
+        // Show empty state if no saved stories
+        if (savedIds.length === 0) {
+            gridRow.style.display = "none";
+            emptyState.style.display = "block";
         }
-      };
-
-      // Unsave button
-      card.querySelector(".unsaveBtn").onclick = (e) => {
-        e.stopPropagation(); // stop card click
-        removeSave(id, card);
-      };
-
-      document.getElementById("grid").appendChild(card);
-    });
-});
-
-
-// Unsave function
-function removeSave(id, cardElement) {
-  savedIds = savedIds.filter(item => item !== id);
-  localStorage.setItem("savedStories", JSON.stringify(savedIds));
-
-  cardElement.remove();
-
-  if (savedIds.length === 0) {
-    document.getElementById("grid").innerHTML = "<p>No saved stories yet.</p>";
-  }
-}
-</script>
-
+        
+        // For each story fetch full data
+        savedIds.forEach(id => {
+            fetch(`../stories/${id}.json`)
+                .then(res => {
+                    if (!res.ok) throw new Error("Story not found");
+                    return res.json();
+                })
+                .then(data => {
+                    // Calculate reading time
+                    const words = data.content.join(" ").split(" ").length;
+                    const minutes = Math.ceil(words / 120);
+                    
+                    // Determine tag color
+                    const tagColors = {
+                        "Technology": "bg-primary",
+                        "Science": "bg-success",
+                        "Health": "bg-danger",
+                        "Business": "bg-warning",
+                        "Entertainment": "bg-info",
+                        "Sports": "bg-secondary"
+                    };
+                    
+                    const tagClass = tagColors[data.tag] || "bg-secondary";
+                    
+                    // Create card column
+                    const col = document.createElement("div");
+                    col.className = "col-12 col-md-6 col-lg-4";
+                    
+                    // Create card
+                    col.innerHTML = `
+                        <article class="story-card">
+                            <a href="../story.html?id=${id}" class="card-link">
+                                <img src="${data.image}" class="story-image" alt="${data.title}">
+                                <div class="p-3">
+                                    <span class="story-tag ${tagClass} text-white">${data.tag}</span>
+                                    <h3 class="story-title">${data.title}</h3>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="story-meta">
+                                            <i class="bi bi-clock me-1"></i>${minutes} min read
+                                        </div>
+                                        <button class="unsave-btn" data-id="${id}">
+                                            <i class="bi bi-bookmark-check-fill me-1"></i>Unsave
+                                        </button>
+                                    </div>
+                                </div>
+                            </a>
+                        </article>
+                    `;
+                    
+                    // Unsave button event
+                    col.querySelector(".unsave-btn").addEventListener("click", function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        removeSave(id, col);
+                    });
+                    
+                    gridRow.appendChild(col);
+                    
+                    // Update visibility
+                    emptyState.style.display = "none";
+                    gridRow.style.display = "flex";
+                })
+                .catch(error => {
+                    console.error("Error loading story:", error);
+                    // If story doesn't exist, remove it from saved list
+                    savedIds = savedIds.filter(item => item !== id);
+                    localStorage.setItem("savedStories", JSON.stringify(savedIds));
+                });
+        });
+        
+        // Unsave function
+        function removeSave(id, cardElement) {
+            // Remove from array
+            savedIds = savedIds.filter(item => item !== id);
+            localStorage.setItem("savedStories", JSON.stringify(savedIds));
+            
+            // Remove card with animation
+            cardElement.style.opacity = "0.5";
+            cardElement.style.transform = "scale(0.95)";
+            
+            setTimeout(() => {
+                cardElement.remove();
+                
+                // Check if all cards are gone
+                if (savedIds.length === 0) {
+                    gridRow.style.display = "none";
+                    emptyState.style.display = "block";
+                }
+                
+                // Show toast notification
+                unsaveToast.show();
+            }, 300);
+        }
+    </script>
 </body>
 </html>
