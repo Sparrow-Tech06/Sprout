@@ -2,108 +2,167 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Saved Stories</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Saved Stories</title>
     
-    <!-- React CDN -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Bootstrap CSS only (no JS) -->
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Vue.js 3 CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     
     <style>
-        body { background-color: #f8f9fa; padding: 20px; }
-        .story-card { border: none; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .story-card img { height: 120px; object-fit: cover; }
+        body {
+            background-color: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        
+        .story-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        
+        .story-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .story-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+        }
+        
+        @media (max-width: 768px) {
+            .story-image {
+                width: 70px;
+                height: 70px;
+            }
+        }
+        
+        .empty-state {
+            color: #6c757d;
+        }
     </style>
 </head>
 
 <body>
-    <div id="root"></div>
+    <div id="app" class="container py-4">
+        <header class="mb-4">
+            <h1 class="h2 mb-0">
+                <i class="bi bi-bookmark-star-fill text-warning me-2"></i>
+                Saved Stories
+            </h1>
+            <p class="text-muted mb-0">Your bookmarked articles and stories</p>
+        </header>
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
+        <main>
+            <div v-if="stories.length === 0" class="text-center py-5 empty-state">
+                <i class="bi bi-bookmark-x display-1 text-secondary mb-3"></i>
+                <p class="lead">No saved stories yet</p>
+                <p class="text-muted">Start saving stories to see them here</p>
+            </div>
 
-        function App() {
-            const [stories, setStories] = useState([]);
-            const [savedIds, setSavedIds] = useState([]);
-
-            useEffect(() => {
-                const ids = JSON.parse(localStorage.getItem("savedStories")) || [];
-                setSavedIds(ids);
-                
-                if (ids.length === 0) return;
-
-                const loadStories = async () => {
-                    const loadedStories = [];
-                    for (const id of ids) {
-                        try {
-                            const res = await fetch(`../stories/${id}.json`);
-                            const data = await res.json();
-                            const words = data.content.join(" ").split(" ").length;
-                            data.minutes = Math.ceil(words / 120);
-                            loadedStories.push({...data, id});
-                        } catch (error) {
-                            console.error("Error loading story:", error);
-                        }
-                    }
-                    setStories(loadedStories);
-                };
-                
-                loadStories();
-            }, []);
-
-            const removeSave = (id) => {
-                const newIds = savedIds.filter(item => item !== id);
-                localStorage.setItem("savedStories", JSON.stringify(newIds));
-                setSavedIds(newIds);
-                setStories(stories.filter(story => story.id !== id));
-            };
-
-            if (savedIds.length === 0) {
-                return (
-                    <div className="text-center text-muted py-5">
-                        <h4>No saved stories yet.</h4>
-                    </div>
-                );
-            }
-
-            return (
-                <div className="container">
-                    <h3 className="mb-4">⭐ Saved Stories</h3>
-                    <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                        {stories.map(story => (
-                            <div className="col" key={story.id}>
-                                <div className="story-card bg-white">
-                                    <div className="row g-0">
-                                        <div className="col-4">
-                                            <img src={story.image} className="w-100 h-100" alt={story.title} />
+            <section v-else class="row g-3">
+                <article 
+                    v-for="story in stories" 
+                    :key="story.id" 
+                    class="col-12"
+                    @click="openStory(story.id)"
+                >
+                    <div class="card story-card border-0 shadow-sm">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-auto">
+                                <img 
+                                    :src="story.image" 
+                                    :alt="story.title" 
+                                    class="story-image rounded-start"
+                                >
+                            </div>
+                            <div class="col">
+                                <div class="card-body py-2">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h3 class="h6 card-title mb-1">{{ story.title }}</h3>
+                                            <span class="badge bg-light text-dark mb-2">
+                                                {{ story.tag }}
+                                            </span>
+                                            <p class="card-text">
+                                                <small class="text-muted">
+                                                    <i class="bi bi-clock me-1"></i>
+                                                    {{ story.readingTime }} min read
+                                                </small>
+                                            </p>
                                         </div>
-                                        <div className="col-8 p-3">
-                                            <h6 className="fw-bold mb-1">{story.title}</h6>
-                                            <p className="text-muted small mb-2">{story.tag}</p>
-                                            <div className="d-flex justify-content-between align-items-center">
-                                                <span className="text-muted small">{story.minutes} min read</span>
-                                                <button 
-                                                    className="btn btn-sm btn-outline-danger"
-                                                    onClick={() => removeSave(story.id)}
-                                                >
-                                                    Unsave
-                                                </button>
-                                            </div>
-                                        </div>
+                                        <button 
+                                            class="btn btn-outline-danger btn-sm"
+                                            @click.stop="removeStory(story.id)"
+                                            :aria-label="`Unsave ${story.title}`"
+                                        >
+                                            <i class="bi bi-bookmark-dash"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                        ))}
+                        </div>
                     </div>
-                </div>
-            );
-        }
+                </article>
+            </section>
+        </main>
+    </div>
 
-        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    <script>
+        const { createApp } = Vue;
+        
+        createApp({
+            data() {
+                return {
+                    stories: []
+                }
+            },
+            
+            mounted() {
+                this.loadSavedStories();
+            },
+            
+            methods: {
+                loadSavedStories() {
+                    const savedIds = JSON.parse(localStorage.getItem("savedStories")) || [];
+                    
+                    if (savedIds.length === 0) return;
+                    
+                    savedIds.forEach(id => {
+                        fetch(`../stories/${id}.json`)
+                            .then(res => res.json())
+                            .then(data => {
+                                const words = data.content.join(" ").split(" ").length;
+                                const minutes = Math.ceil(words / 120);
+                                
+                                this.stories.push({
+                                    id: id,
+                                    title: data.title,
+                                    tag: data.tag,
+                                    image: data.image,
+                                    readingTime: minutes
+                                });
+                            });
+                    });
+                },
+                
+                openStory(id) {
+                    window.location.href = `../story.html?id=${id}`;
+                },
+                
+                removeStory(id) {
+                    this.stories = this.stories.filter(story => story.id !== id);
+                    
+                    const savedIds = JSON.parse(localStorage.getItem("savedStories")) || [];
+                    const updatedIds = savedIds.filter(savedId => savedId !== id);
+                    localStorage.setItem("savedStories", JSON.stringify(updatedIds));
+                }
+            }
+        }).mount('#app');
     </script>
 </body>
 </html>
