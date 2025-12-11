@@ -87,7 +87,7 @@ if (savedIds.length === 0) {
 
 // For each story fetch full data
 savedIds.forEach(id => {
-  fetch(`/stories/${id}.json`)
+  fetch(`../stories/${id}.json`)
     .then(res => res.json())
     .then(data => {
       // Calculate reading time
@@ -111,7 +111,7 @@ savedIds.forEach(id => {
       // On click open story
       card.onclick = (e) => {
         if (!e.target.classList.contains("unsaveBtn")) {
-          window.location.href = "/story.html?id=" + id;
+          window.location.href = "../story.html?id=" + id;
         }
       };
 
