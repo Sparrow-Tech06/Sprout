@@ -14,19 +14,21 @@
     
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #fff ;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
         
         .story-card {
             transition: transform 0.2s, box-shadow 0.2s;
             cursor: pointer;
+            padding: 3px ;
         }
         
         .story-image {
             width: 80px;
             height: 80px;
             object-fit: fill ;
+            border-radius:6px ;
         }
         
         .empty-state {
@@ -46,8 +48,8 @@
         <main>
             <div v-if="stories.length === 0" class="text-center py-5 empty-state">
                 <i class="bi bi-bookmark-x display-1 text-secondary mb-3"></i>
-                <p class="lead">No saved stories yet</p>
-                <p class="text-muted">Start saving stories to see them here</p>
+                <p class="lead"> No saved stories yet </p>
+                <p class="text-muted"> Start saving stories to see them here. </p>
             </div>
 
             <section v-else class="row g-3">
