@@ -2,15 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no,viewport-fit=cover"> 
-  
+  <meta name="viewport"
+        content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no,viewport-fit=cover">
+
   <title>Story</title>
-  
+
   <style>
-    body { font-family: Arial; padding: 20px; }
+    body { font-family: Arial; padding: 20px; line-height: 1.6; }
     img { width: 100%; border-radius: 12px; }
+    p { margin-bottom: 15px; }
   </style>
-  
+
 </head>
 <body>
 
@@ -21,11 +23,9 @@
   <div id="content"></div>
 
 <script>
-  // URL theke ?id=story3 niye asha
   const params = new URLSearchParams(window.location.search);
-  const storyId = params.get("id"); // story1, story2 ...
+  const storyId = params.get("id");
 
-  // JSON load
   fetch(`stories/${storyId}.json`)
     .then(res => res.json())
     .then(data => {
@@ -33,7 +33,14 @@
         document.getElementById("tag").innerText = data.tag;
         document.getElementById("time").innerText = data.time;
         document.getElementById("image").src = data.image;
-        document.getElementById("content").innerHTML = data.content;
+
+        // content array insert
+        let contentHTML = "";
+        data.content.forEach(c => {
+            contentHTML += `<p>${c}</p>`;
+        });
+
+        document.getElementById("content").innerHTML = contentHTML;
     })
     .catch(err => {
         document.body.innerHTML = "<h2>Story not found</h2>";
