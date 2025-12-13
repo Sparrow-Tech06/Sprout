@@ -1,8 +1,8 @@
 const webVersion = "13"; // Website-required version
 
 function checkVersion() {
-   //   const appVersion = Android.getAppVersion(); 
-    const appVersion = "5.0"; // For demo/testing only
+     const appVersion = Android.getAppVersion(); 
+    // const appVersion = "5.0"; // For demo/testing only
 
     if (appVersion !== webVersion) {
         redirectToUpdatePage();
