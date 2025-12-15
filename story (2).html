@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<title>Story</title>
+
+<style>
+  body { 
+    font-family: Arial; 
+    padding: 20px; 
+    line-height: 1.6; 
+    transition: font-size 0.2s ease;
+  }
+  img { width: 100%; border-radius: 12px; margin: 15px 0; }
+  p { margin-bottom: 15px; }
+
+  /* Progress Bar */
+  #progressBar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 4px;
+    background: #4fa3f7;
+    width: 0%;
+    z-index: 999;
+    transition: width 0.1s;
+  }
+
+  /* Top buttons */
+  .tools {
+    display: flex; 
+    gap: 12px; 
+    margin-bottom: 20px;
+  }
+  .btn {
+    padding: 7px 12px;
+    border-radius: 6px;
+    border: none;
+    background: #e4e4e4;
+    font-size: 14px;
+  }
+</style>
+</head>
+
+<body>
+
+<div id="progressBar"></div>
+
+<h1 id="title"></h1>
+<p id="tag"></p>
+<p id="time"></p>
+
+<div class="tools">
+  <button id="fontInc" class="btn">A+</button>
+  <button id="fontDec" class="btn">A-</button>
+  <button id="saveBtn" class="btn">⭐ Save</button>
+</div>
+
+<img id="image">
+<div id="content"></div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const storyId = params.get("id");
+
+let currentFont = 16;   // default font size
+
+// Fetch Story JSON
+fetch(`stories/${storyId}.json`)
+  .then(res => res.json())
+  .then(data => {
+      document.getElementById("title").innerText = data.title;
+      document.getElementById("tag").innerText = data.tag;
+      document.getElementById("image").src = data.image;
+
+      // Reading time auto calculate
+      const totalWords = data.content.join(" ").split(" ").length;
+      const minutes = Math.ceil(totalWords / 120); // avg reading speed
+      document.getElementById("time").innerText = minutes + " min read";
+
+      // Render content paragraphs
+      let html = "";
+      data.content.forEach(c => html += `<p>${c}</p>`);
+      document.getElementById("content").innerHTML = html;
+      
+      loadSaveStatus(data.title);
+  })
+  .catch(err => document.body.innerHTML = "<h2>Story not found</h2>");
+
+
+// Reading progress bar
+window.addEventListener("scroll", () => {
+  let docHeight = document.body.scrollHeight - window.innerHeight;
+  let scrollPos = window.scrollY;
+  let progress = (scrollPos / docHeight) * 100;
+  document.getElementById("progressBar").style.width = progress + "%";
+});
+
+
+// Text resize buttons
+document.getElementById("fontInc").onclick = () => {
+  currentFont += 2;
+  document.body.style.fontSize = currentFont + "px";
+};
+
+document.getElementById("fontDec").onclick = () => {
+  currentFont -= 2;
+  document.body.style.fontSize = currentFont + "px";
+};
+
+
+// SAVE / UNSAVE SYSTEM
+function loadSaveStatus(title) {
+  const saved = JSON.parse(localStorage.getItem("savedStories")) || [];
+  
+  const btn = document.getElementById("saveBtn");
+  if (saved.includes(storyId)) {
+    btn.innerText = "⭐ Saved";
+    btn.style.background = "#ffd24c";
+  }
+
+  btn.onclick = () => toggleSave(title);
+}
+
+function toggleSave(title) {
+  let saved = JSON.parse(localStorage.getItem("savedStories")) || [];
+  const btn = document.getElementById("saveBtn");
+
+  if (saved.includes(storyId)) {
+    // remove
+    saved = saved.filter(id => id !== storyId);
+    btn.innerText = "⭐ Save";
+    btn.style.background = "#e4e4e4";
+  } else {
+    // add
+    saved.push(storyId);
+    btn.innerText = "⭐ Saved";
+    btn.style.background = "#ffd24c";
+  }
+
+  localStorage.setItem("savedStories", JSON.stringify(saved));
+}
+</script>
+
+</body>
+</html>
