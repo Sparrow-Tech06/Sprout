@@ -8,13 +8,19 @@ content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Story</title>
 
 <style>
-  body { 
-    font-family: Arial; 
-    padding: 20px; 
-    line-height: 1.6; 
+  body {
+    font-family: Arial;
+    padding: 20px;
+    line-height: 1.6;
     transition: font-size 0.2s ease;
   }
-  img { width: 100%; border-radius: 12px; margin: 15px 0; }
+
+  img {
+    width: 100%;
+    border-radius: 12px;
+    margin: 15px 0;
+  }
+
   p { margin-bottom: 15px; }
 
   /* Progress Bar */
@@ -25,21 +31,55 @@ content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     background: #4fa3f7;
     width: 0%;
     z-index: 999;
-    transition: width 0.1s;
   }
 
   /* Top buttons */
   .tools {
-    display: flex; 
-    gap: 12px; 
+    display: flex;
+    gap: 12px;
     margin-bottom: 20px;
   }
+
   .btn {
     padding: 7px 12px;
     border-radius: 6px;
     border: none;
     background: #e4e4e4;
     font-size: 14px;
+  }
+
+  /* 🔹 Skeleton Loader */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      #eee 25%,
+      #f5f5f5 37%,
+      #eee 63%
+    );
+    background-size: 400% 100%;
+    animation: shimmer 1.4s infinite;
+    border-radius: 6px;
+    margin-bottom: 15px;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+  }
+
+  .sk-title { height: 32px; width: 70%; }
+  .sk-text { height: 14px; width: 100%; }
+  .sk-img { height: 200px; }
+
+  /* Error */
+  .error {
+    text-align: center;
+    margin-top: 50px;
+  }
+
+  .error img {
+    max-width: 260px;
+    opacity: 0.8;
   }
 </style>
 </head>
@@ -48,96 +88,114 @@ content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 
 <div id="progressBar"></div>
 
-<h1 id="title"></h1>
-<p id="tag"></p>
-<p id="time"></p>
-
-<div class="tools">
-  <button id="fontInc" class="btn">A+</button>
-  <button id="fontDec" class="btn">A-</button>
-  <button id="saveBtn" class="btn">⭐ Save</button>
+<!-- 🔹 LOADING -->
+<div id="loader">
+  <div class="skeleton sk-title"></div>
+  <div class="skeleton sk-text"></div>
+  <div class="skeleton sk-text"></div>
+  <div class="skeleton sk-img"></div>
+  <div class="skeleton sk-text"></div>
+  <div class="skeleton sk-text"></div>
+  <div class="skeleton sk-text"></div>
 </div>
 
-<img id="image">
-<div id="content"></div>
+<!-- 🔹 STORY CONTENT -->
+<div id="story" style="display:none;">
+  <h1 id="title"></h1>
+  <p id="tag"></p>
+  <p id="time"></p>
+
+  <div class="tools">
+    <button id="fontInc" class="btn">A+</button>
+    <button id="fontDec" class="btn">A-</button>
+    <button id="saveBtn" class="btn">⭐ Save</button>
+  </div>
+
+  <img id="image">
+  <div id="content"></div>
+</div>
 
 <script>
 const params = new URLSearchParams(window.location.search);
 const storyId = params.get("id");
 
-let currentFont = 16;   // default font size
+let currentFont = 16;
 
 // Fetch Story JSON
 fetch(`stories/${storyId}.json`)
-  .then(res => res.json())
-  .then(data => {
-      document.getElementById("title").innerText = data.title;
-      document.getElementById("tag").innerText = data.tag;
-      document.getElementById("image").src = data.image;
-
-      // Reading time auto calculate
-      const totalWords = data.content.join(" ").split(" ").length;
-      const minutes = Math.ceil(totalWords / 120); // avg reading speed
-      document.getElementById("time").innerText = minutes + " min read";
-
-      // Render content paragraphs
-      let html = "";
-      data.content.forEach(c => html += `<p>${c}</p>`);
-      document.getElementById("content").innerHTML = html;
-      
-      loadSaveStatus(data.title);
+  .then(res => {
+    if (!res.ok) throw new Error("Not found");
+    return res.json();
   })
-  .catch(err => document.body.innerHTML = "<h2>Story not found</h2>");
+  .then(data => {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("story").style.display = "block";
 
+    document.getElementById("title").innerText = data.title;
+    document.getElementById("tag").innerText = data.tag;
+    document.getElementById("image").src = data.image;
 
-// Reading progress bar
+    const totalWords = data.content.join(" ").split(" ").length;
+    const minutes = Math.ceil(totalWords / 120);
+    document.getElementById("time").innerText = minutes + " min read";
+
+    let html = "";
+    data.content.forEach(c => html += `<p>${c}</p>`);
+    document.getElementById("content").innerHTML = html;
+
+    loadSaveStatus();
+  })
+  .catch(() => {
+    document.body.innerHTML = `
+      <div class="error">
+        <img src="https://picsum.photos/300/200?grayscale">
+        <h2>Story not found</h2>
+        <p>Please try another story.</p>
+      </div>`;
+  });
+
+// Progress Bar
 window.addEventListener("scroll", () => {
   let docHeight = document.body.scrollHeight - window.innerHeight;
   let scrollPos = window.scrollY;
-  let progress = (scrollPos / docHeight) * 100;
-  document.getElementById("progressBar").style.width = progress + "%";
+  document.getElementById("progressBar").style.width =
+    (scrollPos / docHeight) * 100 + "%";
 });
 
-
-// Text resize buttons
-document.getElementById("fontInc").onclick = () => {
+// Font resize
+fontInc.onclick = () => {
   currentFont += 2;
   document.body.style.fontSize = currentFont + "px";
 };
-
-document.getElementById("fontDec").onclick = () => {
+fontDec.onclick = () => {
   currentFont -= 2;
   document.body.style.fontSize = currentFont + "px";
 };
 
-
-// SAVE / UNSAVE SYSTEM
-function loadSaveStatus(title) {
+// Save system
+function loadSaveStatus() {
   const saved = JSON.parse(localStorage.getItem("savedStories")) || [];
-  
-  const btn = document.getElementById("saveBtn");
+  const btn = saveBtn;
+
   if (saved.includes(storyId)) {
     btn.innerText = "⭐ Saved";
     btn.style.background = "#ffd24c";
   }
 
-  btn.onclick = () => toggleSave(title);
+  btn.onclick = toggleSave;
 }
 
-function toggleSave(title) {
+function toggleSave() {
   let saved = JSON.parse(localStorage.getItem("savedStories")) || [];
-  const btn = document.getElementById("saveBtn");
 
   if (saved.includes(storyId)) {
-    // remove
     saved = saved.filter(id => id !== storyId);
-    btn.innerText = "⭐ Save";
-    btn.style.background = "#e4e4e4";
+    saveBtn.innerText = "⭐ Save";
+    saveBtn.style.background = "#e4e4e4";
   } else {
-    // add
     saved.push(storyId);
-    btn.innerText = "⭐ Saved";
-    btn.style.background = "#ffd24c";
+    saveBtn.innerText = "⭐ Saved";
+    saveBtn.style.background = "#ffd24c";
   }
 
   localStorage.setItem("savedStories", JSON.stringify(saved));
@@ -146,3 +204,4 @@ function toggleSave(title) {
 
 </body>
 </html>
+
