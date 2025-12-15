@@ -96,10 +96,17 @@ p{margin-bottom:15px}
 
   <!-- Story -->
   <div v-else-if="story">
-    <h1>{{ story.title }}</h1>
-    <p><i class="bi bi-tags"></i> {{ story.tag }}</p>
-    <p><i class="bi bi-clock"></i> {{ readTime }} min read</p>
-
+    <h1>{{ story.title }}</h1> <!-- Title -->
+    <!-- Tag & Read Time -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <span class="story-tag"><i class="bi bi-tags"></i> {{ story.tag }} </span>
+      <span class="read-time">
+        <i class="bi bi-clock"></i> {{ readTime }} min read
+      </span>
+    </div>
+    
+    <img :src="story.image">
+    
     <div class="tools">
       <button class="btn" @click="fontInc">
         <i class="bi bi-zoom-in"></i>
@@ -114,13 +121,11 @@ p{margin-bottom:15px}
       </button>
     </div>
 
-    <img :src="story.image">
     <p v-for="(p,i) in story.content" :key="i">{{ p }}</p>
   </div>
 
   <!-- Error -->
   <div v-else class="error">
-    <img src="assets/not-found.png">
     <h2>Story not found</h2>
     <p>Please try another story</p>
   </div>
