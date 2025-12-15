@@ -7,199 +7,187 @@ content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 
 <title>Story</title>
 
+<!-- Bootstrap Icons -->
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<!-- Vue.js CDN -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
 <style>
-  body {
-    font-family: Arial;
-    padding: 20px;
-    line-height: 1.6;
-    transition: font-size 0.2s ease;
-  }
+body{
+  font-family: Arial;
+  padding:20px;
+  line-height:1.6;
+  transition:font-size .2s;
+}
 
-  img {
-    width: 100%;
-    border-radius: 12px;
-    margin: 15px 0;
-  }
+img{
+  width:100%;
+  border-radius:12px;
+  margin:15px 0;
+}
 
-  p { margin-bottom: 15px; }
+p{margin-bottom:15px}
 
-  /* Progress Bar */
-  #progressBar {
-    position: fixed;
-    top: 0; left: 0;
-    height: 4px;
-    background: #4fa3f7;
-    width: 0%;
-    z-index: 999;
-  }
+/* Progress */
+#progressBar{
+  position:fixed;
+  top:0;left:0;
+  height:4px;
+  background:#4fa3f7;
+  width:0%;
+  z-index:999;
+}
 
-  /* Top buttons */
-  .tools {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
+/* Tools */
+.tools{
+  display:flex;
+  gap:12px;
+  margin-bottom:20px;
+}
 
-  .btn {
-    padding: 7px 12px;
-    border-radius: 6px;
-    border: none;
-    background: #e4e4e4;
-    font-size: 14px;
-  }
+.btn{
+  padding:7px 12px;
+  border-radius:6px;
+  border:none;
+  background:#e4e4e4;
+  font-size:14px;
+}
 
-  /* 🔹 Skeleton Loader */
-  .skeleton {
-    background: linear-gradient(
-      90deg,
-      #eee 25%,
-      #f5f5f5 37%,
-      #eee 63%
-    );
-    background-size: 400% 100%;
-    animation: shimmer 1.4s infinite;
-    border-radius: 6px;
-    margin-bottom: 15px;
-  }
+/* Skeleton */
+.skeleton{
+  background:linear-gradient(90deg,#eee 25%,#f5f5f5 37%,#eee 63%);
+  background-size:400% 100%;
+  animation:shimmer 1.4s infinite;
+  border-radius:6px;
+  margin-bottom:15px;
+}
+@keyframes shimmer{
+  0%{background-position:100% 0}
+  100%{background-position:-100% 0}
+}
+.sk-title{height:32px;width:70%}
+.sk-text{height:14px;width:100%}
+.sk-img{height:200px}
 
-  @keyframes shimmer {
-    0% { background-position: 100% 0; }
-    100% { background-position: -100% 0; }
-  }
-
-  .sk-title { height: 32px; width: 70%; }
-  .sk-text { height: 14px; width: 100%; }
-  .sk-img { height: 200px; }
-
-  /* Error */
-  .error {
-    text-align: center;
-    margin-top: 50px;
-  }
-
-  .error img {
-    max-width: 260px;
-    opacity: 0.8;
-  }
+/* Error */
+.error{
+  text-align:center;
+  margin-top:60px;
+}
+.error img{max-width:260px;opacity:.8}
 </style>
 </head>
 
 <body>
 
-<div id="progressBar"></div>
+<div id="app">
+  <div id="progressBar"></div>
 
-<!-- 🔹 LOADING -->
-<div id="loader">
-  <div class="skeleton sk-title"></div>
-  <div class="skeleton sk-text"></div>
-  <div class="skeleton sk-text"></div>
-  <div class="skeleton sk-img"></div>
-  <div class="skeleton sk-text"></div>
-  <div class="skeleton sk-text"></div>
-  <div class="skeleton sk-text"></div>
-</div>
-
-<!-- 🔹 STORY CONTENT -->
-<div id="story" style="display:none;">
-  <h1 id="title"></h1>
-  <p id="tag"></p>
-  <p id="time"></p>
-
-  <div class="tools">
-    <button id="fontInc" class="btn">A+</button>
-    <button id="fontDec" class="btn">A-</button>
-    <button id="saveBtn" class="btn">⭐ Save</button>
+  <!-- Loader -->
+  <div v-if="loading">
+    <div class="skeleton sk-title"></div>
+    <div class="skeleton sk-text"></div>
+    <div class="skeleton sk-img"></div>
+    <div class="skeleton sk-text"></div>
+    <div class="skeleton sk-text"></div>
   </div>
 
-  <img id="image">
-  <div id="content"></div>
+  <!-- Story -->
+  <div v-else-if="story">
+    <h1>{{ story.title }}</h1>
+    <p><i class="bi bi-tags"></i> {{ story.tag }}</p>
+    <p><i class="bi bi-clock"></i> {{ readTime }} min read</p>
+
+    <div class="tools">
+      <button class="btn" @click="fontInc">
+        <i class="bi bi-zoom-in"></i>
+      </button>
+      <button class="btn" @click="fontDec">
+        <i class="bi bi-zoom-out"></i>
+      </button>
+      <button class="btn" @click="toggleSave"
+        :style="{background: saved ? '#ffd24c' : '#e4e4e4'}">
+        <i class="bi"
+           :class="saved ? 'bi-bookmark-star-fill' : 'bi-bookmark-star'"></i>
+      </button>
+    </div>
+
+    <img :src="story.image">
+    <p v-for="(p,i) in story.content" :key="i">{{ p }}</p>
+  </div>
+
+  <!-- Error -->
+  <div v-else class="error">
+    <img src="https://picsum.photos/300/200?grayscale">
+    <h2>Story not found</h2>
+    <p>Please try another story</p>
+  </div>
 </div>
 
 <script>
-const params = new URLSearchParams(window.location.search);
-const storyId = params.get("id");
+const { createApp } = Vue;
 
-let currentFont = 16;
+createApp({
+  data(){
+    return{
+      story:null,
+      loading:true,
+      fontSize:16,
+      saved:false
+    }
+  },
+  computed:{
+    readTime(){
+      if(!this.story) return 0;
+      const words=this.story.content.join(" ").split(" ").length;
+      return Math.ceil(words/120);
+    }
+  },
+  mounted(){
+    const id=new URLSearchParams(location.search).get("id");
 
-// Fetch Story JSON
-fetch(`stories/${storyId}.json`)
-  .then(res => {
-    if (!res.ok) throw new Error("Not found");
-    return res.json();
-  })
-  .then(data => {
-    document.getElementById("loader").style.display = "none";
-    document.getElementById("story").style.display = "block";
+    fetch(`stories/${id}.json`)
+      .then(r=>{ if(!r.ok) throw ""; return r.json(); })
+      .then(d=>{
+        this.story=d;
+        this.loading=false;
 
-    document.getElementById("title").innerText = data.title;
-    document.getElementById("tag").innerText = data.tag;
-    document.getElementById("image").src = data.image;
+        const savedArr=JSON.parse(localStorage.getItem("savedStories"))||[];
+        this.saved=savedArr.includes(id);
+      })
+      .catch(()=>{ this.loading=false; });
 
-    const totalWords = data.content.join(" ").split(" ").length;
-    const minutes = Math.ceil(totalWords / 120);
-    document.getElementById("time").innerText = minutes + " min read";
+    window.addEventListener("scroll",()=>{
+      let h=document.body.scrollHeight-innerHeight;
+      progressBar.style.width=(scrollY/h)*100+"%";
+    });
+  },
+  methods:{
+    fontInc(){
+      this.fontSize+=2;
+      document.body.style.fontSize=this.fontSize+"px";
+    },
+    fontDec(){
+      this.fontSize-=2;
+      document.body.style.fontSize=this.fontSize+"px";
+    },
+    toggleSave(){
+      const id=new URLSearchParams(location.search).get("id");
+      let savedArr=JSON.parse(localStorage.getItem("savedStories"))||[];
 
-    let html = "";
-    data.content.forEach(c => html += `<p>${c}</p>`);
-    document.getElementById("content").innerHTML = html;
+      if(this.saved){
+        savedArr=savedArr.filter(x=>x!==id);
+      }else{
+        savedArr.push(id);
+      }
 
-    loadSaveStatus();
-  })
-  .catch(() => {
-    document.body.innerHTML = `
-      <div class="error">
-        <img src="https://picsum.photos/300/200?grayscale">
-        <h2>Story not found</h2>
-        <p>Please try another story.</p>
-      </div>`;
-  });
-
-// Progress Bar
-window.addEventListener("scroll", () => {
-  let docHeight = document.body.scrollHeight - window.innerHeight;
-  let scrollPos = window.scrollY;
-  document.getElementById("progressBar").style.width =
-    (scrollPos / docHeight) * 100 + "%";
-});
-
-// Font resize
-fontInc.onclick = () => {
-  currentFont += 2;
-  document.body.style.fontSize = currentFont + "px";
-};
-fontDec.onclick = () => {
-  currentFont -= 2;
-  document.body.style.fontSize = currentFont + "px";
-};
-
-// Save system
-function loadSaveStatus() {
-  const saved = JSON.parse(localStorage.getItem("savedStories")) || [];
-  const btn = saveBtn;
-
-  if (saved.includes(storyId)) {
-    btn.innerText = "⭐ Saved";
-    btn.style.background = "#ffd24c";
+      this.saved=!this.saved;
+      localStorage.setItem("savedStories",JSON.stringify(savedArr));
+    }
   }
-
-  btn.onclick = toggleSave;
-}
-
-function toggleSave() {
-  let saved = JSON.parse(localStorage.getItem("savedStories")) || [];
-
-  if (saved.includes(storyId)) {
-    saved = saved.filter(id => id !== storyId);
-    saveBtn.innerText = "⭐ Save";
-    saveBtn.style.background = "#e4e4e4";
-  } else {
-    saved.push(storyId);
-    saveBtn.innerText = "⭐ Saved";
-    saveBtn.style.background = "#ffd24c";
-  }
-
-  localStorage.setItem("savedStories", JSON.stringify(saved));
-}
+}).mount("#app");
 </script>
 
 </body>
