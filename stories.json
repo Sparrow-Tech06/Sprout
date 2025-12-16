@@ -73,7 +73,7 @@
     "id": 3,
     "title": "One Piggy Bank, Many Dreams",
     "subtitle": "A fun way to build discipline and boost your savings.",
-    "image": "https://picsum.photos/800/450?random=11",
+    "image": "assets/piggy-bank.png",
     "tag": "CHALLENGE",
     "duration": "4 min read",
     "link": "story.html?id=story3",
