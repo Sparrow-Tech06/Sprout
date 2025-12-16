@@ -1,5 +1,65 @@
 [
   {
+    "id": 10,
+    "title": "Pocket Money Mistakes of College Life",
+    "subtitle": "A simple weekly saving routine that changed her life.",
+    "image": "https://sparrow-tech06.github.io/Sprout/assets/rina-saving-money-illustration.webp",
+    "tag": "STORY",
+    "duration": "3 min read",
+    "link": "story.html?id=story4",
+    "isNew": true
+  },
+  {
+    "id": 9,
+    "title": "The Cost of Showing Off",
+    "subtitle": "A simple weekly saving routine that changed her life.",
+    "image": "https://sparrow-tech06.github.io/Sprout/assets/rina-saving-money-illustration.webp",
+    "tag": "STORY",
+    "duration": "3 min read",
+    "link": "story.html?id=story4",
+    "isNew": true
+  },
+  {
+    "id": 8,
+    "title": "A Festival Shopping Mistake",
+    "subtitle": "A simple weekly saving routine that changed her life.",
+    "image": "https://sparrow-tech06.github.io/Sprout/assets/rina-saving-money-illustration.webp",
+    "tag": "STORY",
+    "duration": "3 min read",
+    "link": "story.html?id=story4",
+    "isNew": true
+  },
+  {
+    "id": 7,
+    "title": "EMI Is Not Free Money",
+    "subtitle": "A simple weekly saving routine that changed her life.",
+    "image": "https://sparrow-tech06.github.io/Sprout/assets/rina-saving-money-illustration.webp",
+    "tag": "STORY",
+    "duration": "3 min read",
+    "link": "story.html?id=story4",
+    "isNew": true
+  },
+  {
+    "id": 6,
+    "title": "Discount Trap Story",
+    "subtitle": "A simple weekly saving routine that changed her life.",
+    "image": "https://sparrow-tech06.github.io/Sprout/assets/rina-saving-money-illustration.webp",
+    "tag": "STORY",
+    "duration": "3 min read",
+    "link": "story.html?id=story4",
+    "isNew": true
+  },
+  {
+    "id": 5,
+    "title": "Pocket Money Lessons from Grandpa",
+    "subtitle": "A simple weekly saving routine that changed her life.",
+    "image": "https://sparrow-tech06.github.io/Sprout/assets/rina-saving-money-illustration.webp",
+    "tag": "STORY",
+    "duration": "3 min read",
+    "link": "story.html?id=story4",
+    "isNew": true
+  },
+  {
     "id": 4,
     "title": "How Rina Saved Her First ₹10,000",
     "subtitle": "A simple weekly saving routine that changed her life.",
@@ -11,7 +71,7 @@
   },
   {
     "id": 3,
-    "title": "The 30-Day No-Spend Challenge",
+    "title": "One Piggy Bank, Many Dreams",
     "subtitle": "A fun way to build discipline and boost your savings.",
     "image": "https://picsum.photos/800/450?random=11",
     "tag": "CHALLENGE",
@@ -21,7 +81,7 @@
   },
   {
     "id": 2,
-    "title": "Small Steps to Big Savings",
+    "title": "Saving Before Spending – A Hard Lesson",
     "subtitle": "How Aarav saved money with 5 tiny daily habit changes.",
     "image": "https://picsum.photos/800/450?random=12",
     "tag": "HABITS",
@@ -31,7 +91,7 @@
   }, 
   {
     "id": 1,
-    "title": "The 30-Day No-Spend Challenge",
+    "title": "The Power of Daily ₹10 Saving",
     "subtitle": "A fun way to build discipline and boost your savings.",
     "image": "https://picsum.photos/800/450?random=11",
     "tag": "CHALLENGE",
