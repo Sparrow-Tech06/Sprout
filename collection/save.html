@@ -1,1 +1,271 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saved Stories</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+<!-- Vue -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<style>
+body{
+    background:#fff;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+}
+
+/* Layout */
+.app-wrapper{
+    max-width:660px;
+    margin:auto;
+}
+
+/* Header */
+.app-header{
+    position:sticky;
+    top:0;
+    background:#fff;
+    border-bottom:1px solid #eee;
+    z-index:10;
+}
+
+/* Filters */
+.filter-scroll{
+    overflow-x:auto;
+    white-space:nowrap;
+}
+.filter-btn{
+    border-radius:20px;
+    padding:6px 16px;
+    font-size:14px;
+    margin-right:8px;
+}
+.filter-btn.active{
+    background:#3ba17c;
+    color:#fff;
+}
+
+/* Story Card */
+.story-card{
+    background:#fff;
+    border-radius:16px;
+    position:relative;
+    cursor:pointer;
+    transition:.2s ease;
+}
+.story-card:active{
+    transform:scale(.98);
+}
+.story-image{
+    width:72px;
+    height:72px;
+    object-fit:cover;
+    border-radius:12px;
+}
+.tag-pill{
+    background:#e9f5ef;
+    color:#2f8f6b;
+    font-size:12px;
+    padding:2px 10px;
+    border-radius:12px;
+    display:inline-block;
+}
+
+/* Unsave */
+.unsave-btn{
+    position:absolute;
+    top:10px;
+    right:10px;
+    font-size:18px;
+    color:#dc3545;
+}
+
+/* Modal */
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.4);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+}
+.modal-box{
+    background:#fff;
+    width:90%;
+    max-width:360px;
+    border-radius:18px;
+    padding:18px;
+    animation:popup .25s ease;
+}
+
+@keyframes popup{
+    from{opacity:0;transform:scale(.9)}
+    to{opacity:1;transform:scale(1)}
+}
+</style>
+</head>
+
+<body>
+<div id="app" class="app-wrapper">
+
+<!-- 🔝 HEADER -->
+<header class="app-header p-3 d-flex align-items-center">
+    <i class="bi bi-arrow-left fs-5"></i>
+    <h6 class="m-0 mx-auto fw-semibold">Saved Stories</h6>
+    <i class="bi bi-bookmark fs-5"></i>
+</header>
+
+<!-- 🔘 FILTERS -->
+<nav v-if="stories.length" class="px-3 pt-3 filter-scroll">
+    <button
+        class="btn btn-light filter-btn"
+        :class="{active:activeTag==='All'}"
+        @click="activeTag='All'">
+        All
+    </button>
+
+    <button
+        v-for="tag in tags"
+        :key="tag"
+        class="btn btn-light filter-btn"
+        :class="{active:activeTag===tag}"
+        @click="activeTag=tag">
+        {{ tag }}
+    </button>
+</nav>
+
+<!-- 📚 CONTENT -->
+<main class="container py-3">
+
+<section v-if="filteredStories.length===0" class="text-center py-5 text-muted">
+    <i class="bi bi-bookmark-x display-4"></i>
+    <p class="mt-2">No saved stories yet</p>
+</section>
+
+<section>
+<article
+    v-for="story in filteredStories"
+    :key="story.id"
+    class="mb-3"
+>
+    <div
+        class="story-card p-3 shadow-sm"
+        role="button"
+        @click="openStory(story.id)"
+    >
+        <i
+            class="bi bi-bookmark-dash unsave-btn"
+            @click.stop="confirmRemove(story)">
+        </i>
+
+        <div class="d-flex">
+            <img :src="story.image" :alt="story.title" class="story-image me-3">
+            <div>
+                <span class="tag-pill">{{ story.tag }}</span>
+                <div class="fw-semibold mt-1">{{ story.title }}</div>
+                <small class="text-muted">
+                    <i class="bi bi-clock"></i>
+                    {{ story.readingTime }} min read
+                </small>
+            </div>
+        </div>
+    </div>
+</article>
+</section>
+
+</main>
+
+<!-- 🧾 CONFIRM MODAL -->
+<div v-if="showConfirm" class="overlay">
+    <div class="modal-box">
+        <p class="fw-semibold mb-2">Remove from saved?</p>
+
+        <div class="d-flex align-items-center mb-3">
+            <img :src="selectedStory.image" class="story-image me-2">
+            <div>
+                <div class="fw-semibold">{{ selectedStory.title }}</div>
+                <small class="text-muted">{{ selectedStory.tag }}</small>
+            </div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button class="btn btn-light w-50" @click="showConfirm=false">Cancel</button>
+            <button class="btn btn-success w-50" @click="removeStory">
+                Yes, Remove
+            </button>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<script>
+const {createApp}=Vue;
+
+createApp({
+data(){
+    return{
+        stories:[],
+        activeTag:'All',
+        showConfirm:false,
+        selectedStory:null
+    }
+},
+computed:{
+    tags(){
+        return [...new Set(this.stories.map(s=>s.tag))];
+    },
+    filteredStories(){
+        return this.activeTag==='All'
+            ? this.stories
+            : this.stories.filter(s=>s.tag===this.activeTag);
+    }
+},
+mounted(){
+    const ids=JSON.parse(localStorage.getItem("savedStories"))||[];
+    ids.forEach(id=>{
+        fetch(`../stories/${id}.json`)
+        .then(r=>r.json())
+        .then(d=>{
+            const words=d.content.join(" ").split(" ").length;
+            this.stories.push({
+                id,
+                title:d.title,
+                tag:d.tag,
+                image:d.image,
+                readingTime:Math.ceil(words/120)
+            });
+        });
+    });
+},
+methods:{
+    openStory(id){
+        window.location.href=`../story.html?id=${id}`;
+    },
+    confirmRemove(story){
+        this.selectedStory=story;
+        this.showConfirm=true;
+    },
+    removeStory(){
+        const id=this.selectedStory.id;
+        this.stories=this.stories.filter(s=>s.id!==id);
+        const saved=JSON.parse(localStorage.getItem("savedStories"))||[];
+        localStorage.setItem(
+            "savedStories",
+            JSON.stringify(saved.filter(i=>i!==id))
+        );
+        this.showConfirm=false;
+    }
+}
+}).mount("#app");
+</script>
+
+</body>
+  </html>
+  
