@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Notifications</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<!-- Font -->
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;user-select:none}
+body{font-family:'Nunito',sans-serif;background:var(--body-bg)}
+
+:root{
+--body-bg:#fff;
+--text-color:#000;
+--card:#fff;
+--header:#fff;
+}
+@media (prefers-color-scheme: dark){
+:root{
+--body-bg:#121212;
+--text-color:#fff;
+--card:#1e1e1e;
+}
+}
+
+/* Header */
+.header{
+display:flex;
+align-items:center;
+padding:11px 10px;
+background:var(--header);
+}
+.header i{
+background:#2ECC71;
+color:#fff;
+padding:5px 10px;
+border-radius:50%;
+}
+
+/* Notification */
+.notification-card{
+border:none;
+border-radius:10px;
+transition:.2s;
+background:var(--card);
+}
+.notification-card:hover{
+transform:scale(.98);
+}
+.notification-logo{
+width:48px;height:48px;
+border-radius:10px;
+border:1px solid #c7f9db;
+}
+
+/* Date */
+.date-title{
+font-size:13px;
+font-weight:700;
+color:#6c757d;
+margin:18px 0 10px;
+}
+
+/* No Data */
+.no-data{
+text-align:center;
+margin-top:120px;
+color:#777;
+}
+.no-data i{font-size:60px}
+
+/* Skeleton */
+.skeleton{
+background:linear-gradient(90deg,#e9ecef 25%,#f8f9fa 37%,#e9ecef 63%);
+background-size:400% 100%;
+animation:skeleton 1.4s ease infinite;
+border-radius:6px;
+}
+@keyframes skeleton{
+0%{background-position:100% 0}
+100%{background-position:-100% 0}
+}
+
+/* Popup */
+.popup{
+position:fixed;inset:0;
+display:flex;
+justify-content:center;
+align-items:center;
+background:rgba(0,0,0,.5);
+z-index:999;
+}
+.popup-content{
+background:#fff;
+padding:22px;
+border-radius:14px;
+width:90%;max-width:380px;
+text-align:center;
+animation:zoom .25s ease;
+}
+@keyframes zoom{
+from{transform:scale(.7);opacity:0}
+to{transform:scale(1);opacity:1}
+}
+</style>
+</head>
+
+<body>
+<div id="app">
+
+<header class="header">
+  <i class="bi bi-arrow-left" @click="goBack"></i>
+</header>
+
+<div class="container py-4">
+
+  <!-- Loading -->
+  <div v-if="loading">
+    <div v-for="i in 4" :key="i" class="card p-2 mb-2 shadow-sm">
+      <div class="d-flex align-items-center">
+        <div class="skeleton me-3" style="width:48px;height:48px"></div>
+        <div class="w-100">
+          <div class="skeleton mb-2" style="height:14px;width:60%"></div>
+          <div class="skeleton" style="height:10px;width:30%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Data -->
+  <div v-else-if="Object.keys(notifications).length===0" class="no-data">
+    <i class="bi bi-bell-slash"></i>
+    <h4>No Notifications</h4>
+    <p>Nothing to show right now</p>
+  </div>
+
+  <!-- Data -->
+  <div v-else>
+    <div v-for="(items,date) in notifications" :key="date">
+      <div class="date-title">{{date}}</div>
+
+      <div v-for="(n,index) in items" :key="index"
+        class="card p-2 mb-2 notification-card shadow-sm"
+        @click="openPopup(n)">
+        <div class="d-flex align-items-center">
+          <img src="https://sparrow-tech06.github.io/NutriTales/assets/splash.png"
+               class="notification-logo me-3">
+          <div>
+            <div class="fw-semibold">{{n.title}}</div>
+            <small class="text-muted">{{n.time}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Popup -->
+<div class="popup" v-if="popup">
+  <div class="popup-content shadow">
+    <h5>{{popup.title}}</h5>
+    <p class="text-muted">{{popup.content}}</p>
+    <button class="btn btn-primary btn-sm" @click="popup=null">Close</button>
+  </div>
+</div>
+
+</div>
+
+<!-- Vue -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+const { createApp } = Vue;
+
+createApp({
+data(){
+return{
+notifications:{},
+loading:true,
+popup:null
+}
+},
+methods:{
+goBack(){ history.back(); },
+async fetchData(){
+try{
+this.loading=true;
+const res = await fetch("notifications.json?_="+Date.now());
+this.notifications = await res.json();
+}catch(e){
+console.log(e);
+}
+this.loading=false;
+},
+openPopup(n){
+this.popup = n;
+}
+},
+mounted(){
+this.fetchData();
+setInterval(this.fetchData,1000);
+}
+}).mount("#app");
+</script>
+
+</body>
+</html>
