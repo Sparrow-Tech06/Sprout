@@ -102,12 +102,12 @@ body{
 /* ===== CONTENT ===== */
 .content{
   background:var(--card);
-  margin:20px 10px 20px;
+  margin:20px 10px 30px;
   padding:10px;
   border-radius:18px;
 }
 .story-text{
-  line-height:1.5;
+  line-height:1.7;
   color:#333;
   transition:.2s;
 }
@@ -117,7 +117,7 @@ body{
   gap:12px;
   font-size:13px;
   color:#6c757d;
-  margin-bottom:14px;
+  margin:14px 0px;
 }
 .meta i{
   color:var(--primary);
@@ -191,8 +191,8 @@ body{
       <span class="story-tag">{{ story.tag }}</span>
 
       <div>
-        <button class="font-btn me-2" @click="fontDec">A−</button>
-        <button class="font-btn ms-1" @click="fontInc">A+</button>
+        <button class="font-btn me-3" @click="fontDec">A−</button>
+        <button class="font-btn me-3" @click="fontInc">A+</button>
       </div>
     </div>
   </div>
