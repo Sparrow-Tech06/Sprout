@@ -206,16 +206,31 @@ body{
   <!-- Right : Save + Share -->
   <div class="right">
     <div class="icon-btn" @click="toggleSave">
-      <i class="bi"
-         :class="saved ? 'bi-bookmark-fill' : 'bi-bookmark'"></i>
+      <i class="bi" :class="saved ? 'bi-bookmark-fill' : 'bi-bookmark'"></i>
     </div>
 
     <div class="icon-btn" @click="share">
       <i class="bi bi-whatsapp whatsapp-icon"></i>
     </div>
+
+     <div class="ms-auto icon-btn" @click="openLang">
+       <i class="bi bi-translate"></i>
+    </div>
   </div>
 
 </div>
+
+<!-- HIDDEN LANGUAGE SELECT -->
+<select ref="langSelect"
+        v-model="currentLang"
+        @change="changeLang"
+        style="position:absolute;left:-9999px">
+  <option v-for="(v,code) in story?.languages"
+          :key="code"
+          :value="code">
+    {{ code.toUpperCase() }}
+  </option>
+</select>
 
 <!-- ================= LOADER ================= -->
 <div v-if="loading">
@@ -242,7 +257,7 @@ body{
   </div>
 
   <div class="content">
-    <h2 class="fw-bold mb-2">{{ story.title }}</h2>
+    <h2 class="fw-bold mb-2">{{ activeStory.title }}</h2>
 
     <!-- META INFO -->
     <div class="meta">
@@ -256,16 +271,16 @@ body{
       </span>
     </div>
 
-    <p v-for="(p,i) in story.content"
-       :key="i"
-       class="story-text"
-       :style="{fontSize:fontSize+'px'}">
-       {{ p }}
-    </p>
-    <p v-if="story.moral"
+    <p v-for="(p,i) in activeStory.content"
+   :key="i"
+   class="story-text"
+   :style="{fontSize:fontSize+'px'}">
+  {{ p }}
+</p>
+    <p v-if="activeStory.moral"
    class="story-moral"
    :style="{fontSize:(fontSize-1)+'px'}">
-  <strong>Moral:</strong> {{ story.moral }}
+  <strong>Moral:</strong> {{ activeStory.moral }}
 </p>
   </div>
 </div>
@@ -279,9 +294,7 @@ body{
 </div>
 
 <script>
-/* ===== COMMON SHARE URL ===== */
 const COMMON_SHARE_URL = "https://kyraapps.com/story";
-
 const { createApp } = Vue;
 
 createApp({
@@ -290,13 +303,18 @@ data(){
     story:null,
     loading:true,
     fontSize:16,
-    saved:false
+    saved:false,
+    currentLang:"en"
   }
 },
 computed:{
+  activeStory(){
+    if(!this.story) return null;
+    return this.story.languages[this.currentLang];
+  },
   readTime(){
-    if(!this.story) return 0;
-    const words=this.story.content.join(" ").split(" ").length;
+    if(!this.activeStory) return 0;
+    const words=this.activeStory.content.join(" ").split(" ").length;
     return Math.ceil(words/200);
   }
 },
@@ -309,15 +327,20 @@ mounted(){
       this.story=d;
       this.loading=false;
 
-      const savedArr=
-      JSON.parse(localStorage.getItem("savedStories"))||[];
-      this.saved=savedArr.includes(id);
+      // default language
+      this.currentLang =
+        localStorage.getItem("storyLang")
+        || Object.keys(d.languages)[0];
+
+      const savedArr =
+        JSON.parse(localStorage.getItem("savedStories")) || [];
+      this.saved = savedArr.includes(id);
     })
     .catch(()=>this.loading=false);
 },
 methods:{
   goBack(){
-    window.history.back();
+    history.back();
   },
   fontInc(){
     if(this.fontSize<22) this.fontSize+=2;
@@ -329,16 +352,14 @@ methods:{
     const id=new URLSearchParams(location.search).get("id");
     let arr=JSON.parse(localStorage.getItem("savedStories"))||[];
 
-    this.saved
-      ? arr=arr.filter(x=>x!==id)
-      : arr.push(id);
-
+    this.saved ? arr=arr.filter(x=>x!==id) : arr.push(id);
     this.saved=!this.saved;
+
     localStorage.setItem("savedStories",JSON.stringify(arr));
   },
   share(){
     const text=
-`${this.story.title}
+`${this.activeStory.title}
 
 Read more on Kyra Apps:
 ${COMMON_SHARE_URL}`;
@@ -347,10 +368,13 @@ ${COMMON_SHARE_URL}`;
       `https://wa.me/?text=${encodeURIComponent(text)}`,
       "_blank"
     );
+  },
+  openLang(){
+    this.$refs.langSelect.click();
+  },
+  changeLang(){
+    localStorage.setItem("storyLang",this.currentLang);
   }
 }
 }).mount("#app");
 </script>
-
-</body>
-</html>
