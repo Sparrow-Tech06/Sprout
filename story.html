@@ -253,7 +253,9 @@ body{
        :style="{fontSize:fontSize+'px'}">
        {{ p }}
     </p>
-    <p class="moral-text"> {{ story.moral } </p>
+    <p v-if="story.moral" class="story-moral">
+       <strong>Moral:</strong> {{ story.moral }}
+   </p>
   </div>
 </div>
 
