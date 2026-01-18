@@ -241,7 +241,7 @@ body{
 </div>
 
 <!-- ================= STORY ================= -->
-<div v-else-if="story">
+<div v-else-if="activeStory">   <!-- ✅ FIX HERE -->
 
   <div class="img-wrap">
     <img :src="story.image" class="story-img" draggable="false">
@@ -259,7 +259,6 @@ body{
   <div class="content">
     <h2 class="fw-bold mb-2">{{ activeStory.title }}</h2>
 
-    <!-- META INFO -->
     <div class="meta">
       <span>
         <i class="bi bi-clock"></i>
@@ -272,16 +271,17 @@ body{
     </div>
 
     <p v-for="(p,i) in activeStory.content"
-   :key="i"
-   class="story-text"
-   :style="{fontSize:fontSize+'px'}">
-  {{ p }}
-</p>
+       :key="i"
+       class="story-text"
+       :style="{fontSize:fontSize+'px'}">
+      {{ p }}
+    </p>
+
     <p v-if="activeStory.moral"
-   class="story-moral"
-   :style="{fontSize:(fontSize-1)+'px'}">
-  <strong>Moral:</strong> {{ activeStory.moral }}
-</p>
+       class="story-moral"
+       :style="{fontSize:(fontSize-1)+'px'}">
+      <strong>Moral:</strong> {{ activeStory.moral }}
+    </p>
   </div>
 </div>
 
@@ -304,39 +304,54 @@ data(){
     loading:true,
     fontSize:16,
     saved:false,
-    currentLang:"en"
+    currentLang:null
   }
 },
 computed:{
   activeStory(){
-    if(!this.story) return null;
-    return this.story.languages[this.currentLang];
+    if(!this.story || !this.story.languages) return null;
+
+    // fallback protection
+    return (
+      this.story.languages[this.currentLang] ||
+      this.story.languages[Object.keys(this.story.languages)[0]]
+    );
   },
   readTime(){
     if(!this.activeStory) return 0;
-    const words=this.activeStory.content.join(" ").split(" ").length;
-    return Math.ceil(words/200);
+    const words =
+      this.activeStory.content.join(" ").split(" ").length;
+    return Math.ceil(words / 200);
   }
 },
 mounted(){
-  const id=new URLSearchParams(location.search).get("id");
+  const id=new URLSearchParams(location.search).get("id") || 1;
 
   fetch(`stories/${id}.json`)
-    .then(r=>{ if(!r.ok) throw ""; return r.json(); })
+    .then(r=>{
+      if(!r.ok) throw new Error("Story not found");
+      return r.json();
+    })
     .then(d=>{
-      this.story=d;
-      this.loading=false;
+      this.story = d;
 
-      // default language
+      // restore language OR fallback
+      const savedLang = localStorage.getItem("storyLang");
       this.currentLang =
-        localStorage.getItem("storyLang")
-        || Object.keys(d.languages)[0];
+        (savedLang && d.languages[savedLang])
+        ? savedLang
+        : Object.keys(d.languages)[0];
 
       const savedArr =
         JSON.parse(localStorage.getItem("savedStories")) || [];
       this.saved = savedArr.includes(id);
+
+      this.loading = false;
     })
-    .catch(()=>this.loading=false);
+    .catch(err=>{
+      console.error(err);
+      this.loading=false;
+    });
 },
 methods:{
   goBack(){
@@ -352,13 +367,17 @@ methods:{
     const id=new URLSearchParams(location.search).get("id");
     let arr=JSON.parse(localStorage.getItem("savedStories"))||[];
 
-    this.saved ? arr=arr.filter(x=>x!==id) : arr.push(id);
-    this.saved=!this.saved;
+    this.saved
+      ? arr=arr.filter(x=>x!==id)
+      : arr.push(id);
 
+    this.saved=!this.saved;
     localStorage.setItem("savedStories",JSON.stringify(arr));
   },
   share(){
-    const text=
+    if(!this.activeStory) return;
+
+    const text =
 `${this.activeStory.title}
 
 Read more on Kyra Apps:
@@ -370,7 +389,8 @@ ${COMMON_SHARE_URL}`;
     );
   },
   openLang(){
-    this.$refs.langSelect.click();
+    if(this.$refs.langSelect)
+      this.$refs.langSelect.click();
   },
   changeLang(){
     localStorage.setItem("storyLang",this.currentLang);
