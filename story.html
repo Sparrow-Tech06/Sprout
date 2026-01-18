@@ -38,25 +38,50 @@ body{
 
 /* ===== TOP BAR ===== */
 .top-bar{
-  position:sticky;
-  top:0;
-  z-index:999;
-  height:56px;
-  background:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
 }
+
+/* Left & Right container */
+.top-bar .left,
+.top-bar .right{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Icon button */
 .icon-btn{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  background:var(--soft);
-  display: flex ;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center ;
-  cursor:pointer;
+  background: var(--soft);
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.icon-btn i{
+  font-size: 18px;
+  color: #2e7d32; /* theme color */
+}
+
+.icon-btn:hover{
+  background: #e8f5e9;
+}
+
+/* WhatsApp icon color */
+.whatsapp-icon{
+  color: #25D366 !important;
 }
 
 /* ===== IMAGE ===== */
@@ -153,19 +178,23 @@ body{
 
 <!-- ================= HEADER ================= -->
 <div class="top-bar">
-
-  <div class="icon-btn" @click="goBack">
-    <i class="bi bi-arrow-left"></i>
+  
+  <!-- Left : Back -->
+  <div class="left">
+    <div class="icon-btn" @click="goBack">
+      <i class="bi bi-arrow-left"></i>
+    </div>
   </div>
 
-  <div class="ms-auto gap-2">
-    <div class="icon-btn" @click="toggleSave" style="display:inline-block;">
+  <!-- Right : Save + Share -->
+  <div class="right">
+    <div class="icon-btn" @click="toggleSave">
       <i class="bi"
-      :class="saved ? 'bi-bookmark-fill' : 'bi-bookmark'"></i>
+         :class="saved ? 'bi-bookmark-fill' : 'bi-bookmark'"></i>
     </div>
 
-    <div class="icon-btn" @click="share" style="display:inline-block;">
-      <i class="bi bi-whatsapp" style="color:#25D366"></i>
+    <div class="icon-btn" @click="share">
+      <i class="bi bi-whatsapp whatsapp-icon"></i>
     </div>
   </div>
 
