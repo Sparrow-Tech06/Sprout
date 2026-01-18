@@ -158,13 +158,13 @@ body{
     <i class="bi bi-arrow-left"></i>
   </div>
 
-  <div class="ms-auto gap-2" style="display:flex;>
-    <div class="icon-btn" @click="toggleSave">
+  <div class="ms-auto gap-2">
+    <div class="icon-btn" @click="toggleSave" style="display:inline-block;">
       <i class="bi"
       :class="saved ? 'bi-bookmark-fill' : 'bi-bookmark'"></i>
     </div>
 
-    <div class="icon-btn" @click="share">
+    <div class="icon-btn" @click="share" style="display:inline-block;">
       <i class="bi bi-whatsapp" style="color:#25D366"></i>
     </div>
   </div>
