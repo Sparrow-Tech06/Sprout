@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<title>Story | Kyra Apps</title>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<!-- Vue 3 CDN -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<style>
+:root{
+  --primary:#2e7d32;
+  --bg:#ffffff;
+  --main-color:#ffffff;
+  --card:#ffffff;
+  --soft:#e9f5ef;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#212529;
+    --main-color:#343a40;
+    --card:#212529;
+  }
+}
+
+/* ===== BASE ===== */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  user-select:none;
+}
+body{
+  background:var(--bg);
+  font-family:system-ui,-apple-system;
+  color:#222;
+}
+@media (prefers-color-scheme: dark){
+  body{color:#e9ecef;}
+}
+
+/* ===== TOP BAR ===== */
+.top-bar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 14px;
+  background:var(--main-color);
+  border-bottom:1px solid rgba(0,0,0,.06);
+}
+.left,.right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.icon-btn{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--soft);
+  transition:.2s;
+}
+.icon-btn i{
+  font-size:18px;
+  color:var(--primary);
+}
+.icon-btn:active{transform:scale(.92);}
+.whatsapp-icon{color:#25D366 !important;}
+
+/* ===== IMAGE ===== */
+.img-wrap{position:relative;}
+.story-img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+}
+.img-controls{
+  position:absolute;
+  bottom:-18px;
+  left:16px;
+  right:16px;
+  background:var(--main-color);
+  border-radius:14px;
+  padding:8px 12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+.story-tag{
+  background:#e8f5e9;
+  color:var(--primary);
+  font-size:12px;
+  padding:4px 12px;
+  border-radius:20px;
+  font-weight:600;
+}
+.font-btn{
+  border:none;
+  background:var(--soft);
+  padding:4px 10px;
+  border-radius:6px;
+  font-weight:600;
+}
+
+/* ===== CONTENT ===== */
+.content{
+  margin:30px 10px;
+  background:var(--card);
+  border-radius:18px;
+  padding:14px;
+}
+.story-text{
+  line-height:1.75;
+  margin-bottom:14px;
+  transition:.2s;
+}
+@media (prefers-color-scheme: dark){
+  .story-text{color:#dee2e6;}
+}
+.meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  font-size:13px;
+  color:#6c757d;
+  margin:14px 0;
+}
+.meta i{color:var(--primary);}
+
+/* ===== MORAL ===== */
+.story-moral{
+  background:#e8f5e9;
+  border-left:4px solid var(--primary);
+  padding:12px 14px;
+  border-radius:8px;
+  margin-top:20px;
+  color:var(--primary);
+}
+
+/* ===== SKELETON ===== */
+.skeleton{
+  background:linear-gradient(90deg,#eee 25%,#f8f9fa 37%,#eee 63%);
+  background-size:400% 100%;
+  animation:shimmer 1.4s infinite;
+  border-radius:6px;
+  margin:16px 10px;
+}
+@keyframes shimmer{
+  0%{background-position:100% 0}
+  100%{background-position:-100% 0}
+}
+.sk-img{height:220px}
+.sk-title{height:28px;width:80%}
+.sk-text{height:14px}
+
+/* ===== ERROR ===== */
+.error{
+  text-align:center;
+  padding:40px 20px;
+}
+</style>
+</head>
+
+<body>
+<div id="app">
+
+<!-- HEADER -->
+<div class="top-bar">
+  <div class="left">
+    <div class="icon-btn" @click="goBack">
+      <i class="bi bi-arrow-left"></i>
+    </div>
+  </div>
+  <div class="right">
+    <div class="icon-btn" @click="toggleSave">
+      <i class="bi" :class="saved?'bi-bookmark-fill':'bi-bookmark'"></i>
+    </div>
+    <div class="icon-btn" @click="share">
+      <i class="bi bi-whatsapp whatsapp-icon"></i>
+    </div>
+  </div>
+</div>
+
+<!-- LOADER -->
+<div v-if="loading">
+  <div class="skeleton sk-img"></div>
+  <div class="skeleton sk-title"></div>
+  <div class="skeleton sk-text"></div>
+  <div class="skeleton sk-text"></div>
+</div>
+
+<!-- STORY -->
+<div v-else-if="story">
+  <div class="img-wrap">
+    <img :src="story.image" class="story-img" loading="lazy" draggable="false">
+    <div class="img-controls">
+      <span class="story-tag">{{ story.tag }}</span>
+      <div>
+        <button class="font-btn" @click="fontDec">A−</button>
+        <button class="font-btn ms-2" @click="fontInc">A+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <h2 class="fw-bold">{{ story.title }}</h2>
+
+    <div class="meta">
+      <span><i class="bi bi-clock"></i> {{ readTime }} min read</span>
+      <span><i class="bi bi-pen"></i> Written by <strong>Kyra Apps</strong></span>
+    </div>
+
+    <article>
+      <p v-for="(p,i) in story.content"
+         :key="i"
+         class="story-text"
+         :style="{fontSize:fontSize+'px'}">
+        {{ p }}
+      </p>
+    </article>
+
+    <div v-if="story.moral"
+         class="story-moral"
+         :style="{fontSize:(fontSize-1)+'px'}">
+      <strong>Moral:</strong> {{ story.moral }}
+    </div>
+  </div>
+</div>
+
+<!-- ERROR -->
+<div v-else class="error">
+  <h4>Story not found</h4>
+  <p>Please try another story</p>
+</div>
+
+</div>
+
+<script>
+const COMMON_SHARE_URL = "https://kyraapps.com/story";
+const { createApp } = Vue;
+
+createApp({
+data(){
+  return{
+    story:null,
+    loading:true,
+    fontSize:16,
+    saved:false,
+    storyId:null
+  }
+},
+computed:{
+  readTime(){
+    if(!this.story) return 0;
+    const words=this.story.content.join(" ").split(" ").length;
+    return Math.ceil(words/200);
+  }
+},
+mounted(){
+  this.storyId = new URLSearchParams(location.search).get("id");
+  if(!this.storyId){
+    this.loading=false;
+    return;
+  }
+
+  fetch(`stories/${this.storyId}.json`)
+    .then(r=>{ if(!r.ok) throw ""; return r.json(); })
+    .then(d=>{
+      this.story=d;
+      this.loading=false;
+      const savedArr=JSON.parse(localStorage.getItem("savedStories"))||[];
+      this.saved=savedArr.includes(this.storyId);
+    })
+    .catch(()=>this.loading=false);
+},
+methods:{
+  goBack(){ history.back(); },
+  fontInc(){ if(this.fontSize<22) this.fontSize+=2; },
+  fontDec(){ if(this.fontSize>13) this.fontSize-=2; },
+  toggleSave(){
+    let arr=JSON.parse(localStorage.getItem("savedStories"))||[];
+    this.saved ? arr=arr.filter(x=>x!==this.storyId) : arr.push(this.storyId);
+    this.saved=!this.saved;
+    localStorage.setItem("savedStories",JSON.stringify(arr));
+  },
+  share(){
+    const text = `${this.story.title}\n\nRead more on Kyra Apps:\n${COMMON_SHARE_URL}`;
+    if(navigator.share){
+      navigator.share({title:this.story.title,text,url:COMMON_SHARE_URL});
+    }else{
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,"_blank");
+    }
+  }
+}
+}).mount("#app");
+</script>
+
+</body>
+</html>
