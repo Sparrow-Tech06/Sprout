@@ -76,7 +76,36 @@ body{
   padding:6px 9px;
 }
 .notification-icon i{color:#2f8f6b;font-size:1.3rem;}
+/* ================= SIDEBAR ================= */
+.offcanvas{
+  width:85%!important;
+  background:var(--card);
+}
 
+ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+
+ul li a{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  text-decoration:none;
+  color:var(--text);
+  font-size:14px;
+}
+
+ul li a:hover{
+  background:rgba(0,0,0,0.05);
+}
+
+ul li a i{
+  font-size:22px;
+  color:var(--icon);
+}
 /* ================= STORY CARD ================= */
 .story-card{
   background:var(--card);
