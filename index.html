@@ -24,7 +24,7 @@
   --border:1px solid rgba(255,255,255,0.08);
   --skeleton:#3a3f44;
 }}
-
+* { user-select:none; box-sizing:border-box; }
 body{background:var(--bg);font-family:'Inter',system-ui,sans-serif;color:var(--text);} 
 
 /* skeleton global */
@@ -181,7 +181,7 @@ box.innerHTML=`
 <section class="error-wrapper">
 <article class="error-state loading" role="alert">
 <figure>
-<img src="https://cdn-icons-png.flaticon.com/512/7486/7486740.png" alt="Connection error" 
+<img src="assets/error/not-found.png" draggable="false" alt="Connection error" 
  onload="this.classList.add('loaded'); this.closest('.error-state').classList.remove('loading');">
 </figure>
 <h2>Unable to load stories</h2>
