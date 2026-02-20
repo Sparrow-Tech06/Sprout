@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Sprout – Simple Money Story Learning</title>
+<meta name="google" content="notranslate">
+
+<script src="control_center/version-check.js" defer></script>
+<script src="control_center/app-version-checker.js" defer></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#ffffff;
+  --text:#000000;
+  --card:#ffffff;
+  --primary:#4f46e5;
+  --radius:16px;
+  --border:1px solid rgba(0,0,0,0.08);
+  --shadow:0 8px 20px rgba(0,0,0,0.06);
+  --skeleton:#e5e7eb;
+}
+
+@media(prefers-color-scheme:dark){
+:root{
+  --bg:#212529;
+  --text:#ffffff;
+  --card:#343a40;
+  --border:1px solid rgba(255,255,255,0.08);
+  --skeleton:#3a3f44;
+}}
+
+*{user-select:none;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Inter',system-ui,sans-serif;color:var(--text);}
+
+/* skeleton */
+.skeleton{
+  background:linear-gradient(90deg,var(--skeleton)25%,#f3f4f6 37%,var(--skeleton)63%);
+  background-size:400% 100%;
+  animation:skeleton 1.3s infinite;
+}
+@keyframes skeleton{0%{background-position:100%}100%{background-position:0}}
+
+/* HEADER */
+.header{background:var(--card);border-bottom:var(--border);position:sticky;top:0;z-index:1000;transition:.3s;}
+.navbar-hidden{transform:translateY(-100%);}
+
+.logo{font-weight:700;font-size:1rem;}
+.tagline{font-size:.72rem;color:#64748b;}
+.notification{background:#ecfdf5;padding:7px 10px;border-radius:50%;}
+
+/* SIDEBAR */
+.offcanvas{width:85%!important;}
+.offcanvas a{color:var(--text);text-decoration:none;padding:10px;display:flex;gap:10px;align-items:center;}
+.offcanvas a:hover{background:rgba(0,0,0,0.05);}
+
+/* CARD */
+.story-card{border-radius:var(--radius);border:var(--border);background:var(--card);overflow:hidden;transition:.25s ease;}
+.story-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);}
+
+.thumb{position:relative}
+.thumb img{width:100%;aspect-ratio:16/8;object-fit:cover;opacity:0;transition:.4s;}
+.thumb img.loaded{opacity:1;}
+
+.img-skeleton{position:absolute;inset:0;}
+.img-skeleton.hide{opacity:0;transition:.4s;}
+
+.ribbon{position:absolute;right:10px;top:10px;background:var(--primary);color:#fff;padding:4px 8px;border-radius:30px;font-size:.7rem;}
+.new{position:absolute;left:10px;top:10px;background:#ef4444;color:#fff;padding:4px 8px;border-radius:6px;font-size:.7rem;}
+
+#story-container:not(.loading)>.col-12:nth-child(5n+1) .story-card{background:#ffe4e6;}
+#story-container:not(.loading)>.col-12:nth-child(5n+2) .story-card{background:#ecfeff;}
+#story-container:not(.loading)>.col-12:nth-child(5n+3) .story-card{background:#f0fdf4;}
+#story-container:not(.loading)>.col-12:nth-child(5n+4) .story-card{background:#fef9c3;}
+#story-container:not(.loading)>.col-12:nth-child(5n+5) .story-card{background:#ede9fe;}
+
+/* ERROR */
+.error-wrapper{
+  min-height:65vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.error-state{
+  max-width:380px;
+  text-align:center;
+  padding:20px;
+  border-radius:var(--radius);
+}
+.error-state img{
+  max-width:220px;
+}
+
+.search-btn{border:var(--border);border-radius:12px;background:var(--card);}
+</style>
+</head>
+
+<body>
+
+<header id="main-header" class="header py-2">
+<div class="container-fluid d-flex justify-content-between align-items-center">
+<div class="d-flex align-items-center gap-2">
+<button class="btn" data-bs-toggle="offcanvas" data-bs-target="#sidebar"><i class="bi bi-list fs-4"></i></button>
+<div>
+<div class="logo">Sprout</div>
+<div class="tagline">Simple stories, lasting thoughts</div>
+</div>
+</div>
+
+<div class="d-flex gap-2">
+<a href="search.html" class="search-btn px-2 d-flex align-items-center"><i class="bi bi-search"></i></a>
+<a href="notifications/notifications.html" class="notification"><i class="bi bi-bell"></i></a>
+</div>
+</div>
+</header>
+
+<aside class="offcanvas offcanvas-start" id="sidebar">
+<div class="offcanvas-header">
+<h5>Sprout</h5>
+<button class="btn-close" data-bs-dismiss="offcanvas"></button>
+</div>
+
+<nav class="offcanvas-body">
+<a href="#"><i class="bi bi-person"></i> Profile</a>
+<a href="collection/save.html"><i class="bi bi-bookmark"></i> Saved</a>
+<a href="#"><i class="bi bi-lightbulb"></i> Suggest Story</a>
+<hr>
+<a href="#"><i class="bi bi-shield"></i> Privacy</a>
+<a href="#"><i class="bi bi-question"></i> FAQ</a>
+</nav>
+</aside>
+
+<main class="container py-3">
+<section id="story-container" class="row g-3"></section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const box=document.getElementById("story-container");
+
+function skeleton(n=5){
+box.classList.add("loading");
+let h="";
+for(let i=0;i<n;i++){
+h+=`<div class="col-12">
+   <article class="story-card p-3">
+     <div class="skeleton" style="height:120px"></div>
+     <div class="mt-3 skeleton" style="height:10px"></div>
+     <div class="mt-2 skeleton" style="height:10px;width:70%"></div>
+ </article>
+</div>`;
+}
+box.innerHTML=h;
+}
+
+skeleton();
+
+fetch("shtories.json")
+.then(r=>r.json())
+.then(data=>{
+render(data);
+box.classList.remove("loading");
+})
+.catch(()=>{
+box.classList.remove("loading");
+
+box.innerHTML=`
+<section class="error-wrapper">
+<article class="error-state" role="alert">
+<figure>
+<img src="assets/error/not-found.png" draggable="false" alt="Connection error">
+</figure>
+<h2>Unable to load stories</h2>
+<p>Please check your internet connection and try again. If the problem continues, refresh the app.</p>
+<button class="btn btn-outline-dark btn-sm mt-3" onclick="location.reload()">Retry</button>
+</article>
+</section>`;
+});
+
+function render(data){
+let h="";
+data.forEach(s=>{
+h+=`<div class="col-12">
+<a href="${s.link}" class="text-decoration-none text-dark">
+<article class="story-card">
+<div class="thumb">
+<div class="img-skeleton skeleton"></div>
+<img src="${s.image}" loading="lazy"
+ onload="this.classList.add('loaded'); this.previousElementSibling.classList.add('hide');">
+${s.isNew?`<div class='new'>NEW</div>`:""}
+<div class="ribbon">${s.tag}</div>
+</div>
+<div class="p-3">
+<h6 class="fw-semibold">${s.title}</h6>
+<p class="small mb-1">${s.subtitle}</p>
+<small class="text-muted"><i class="bi bi-clock"></i> ${s.duration}</small>
+</div>
+</article>
+</a>
+</div>`;
+});
+box.innerHTML=h;
+}
+
+let prev=window.pageYOffset;
+const header=document.getElementById("main-header");
+window.addEventListener("scroll",()=>{
+const curr=window.pageYOffset;
+if(curr>60 && curr>prev){header.classList.add("navbar-hidden");}
+else{header.classList.remove("navbar-hidden");}
+prev=curr;
+});
+</script>
+
+</body>
+</html>
+
