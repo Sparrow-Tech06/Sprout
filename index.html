@@ -24,7 +24,7 @@
   --border:1px solid rgba(255,255,255,0.08);
   --skeleton:#3a3f44;
 }}
-/* * { user-select:none; box-sizing:border-box; }  */
+
 body{background:var(--bg);font-family:'Inter',system-ui,sans-serif;color:var(--text);} 
 
 /* skeleton global */
@@ -155,20 +155,14 @@ function skeleton(n=5){
 box.classList.add("loading");
 let h="";
 for(let i=0;i<n;i++){
-h+=`<div class="col-12">
-   <article class="story-card p-3">
-     <div class="skeleton" style="height:120px"></div>
-     <div class="mt-3 skeleton" style="height:10px"></div>
-     <div class="mt-2 skeleton" style="height:10px;width:70%"></div>
- </article>
-   </div>`;
+h+=`<div class="col-12"><article class="story-card p-3 skeleton" style="height:160px"></article></div>`;
 }
 box.innerHTML=h;
 }
 
 skeleton();
 
-fetch("shtories.json")
+fetch("stories.json")
 .then(r=>r.json())
 .then(data=>{
 render(data);
@@ -181,7 +175,7 @@ box.innerHTML=`
 <section class="error-wrapper">
 <article class="error-state loading" role="alert">
 <figure>
-<img src="assets/error/not-found.png" alt="Connection error" 
+<img src="https://cdn-icons-png.flaticon.com/512/7486/7486740.png" alt="Connection error" 
  onload="this.classList.add('loaded'); this.closest('.error-state').classList.remove('loading');">
 </figure>
 <h2>Unable to load stories</h2>
